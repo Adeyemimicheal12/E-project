@@ -52,22 +52,46 @@
             }
         }
 
-        function setWelcome() {
-            const firstName = document.getElementById('firstName').value.trim();
-            if (firstName) {
-                userName = firstName;
-                document.getElementById('userName').textContent = firstName;
-                document.getElementById('userWelcome').style.display = 'block';
-                document.getElementById('welcomeForm').style.display = 'none';
-                document.getElementById('welcomeMessage').style.display = 'block';
-                document.getElementById('welcomeMessage').innerHTML = `
-                    <h3>Welcome to BidSpirit Auctions, ${firstName}!</h3>
-                    <p>Discover extraordinary treasures and place your bids on unique pieces from around the world.</p>
-                `;
-            } else {
-                alert('Please enter your first name to continue.');
-            }
-        }
+        // Show modal on page load
+window.onload = function () {
+  document.getElementById("welcomeModal").style.display = "block";
+};
+
+// Close modal
+function closeWelcomeModal() {
+  document.getElementById("welcomeModal").style.display = "none";
+}
+
+// Save and show user name
+function setUserName() {
+  const nameInput = document.getElementById("firstName").value.trim();
+
+  if (nameInput === "") {
+    alert("Please enter your name before proceeding.");
+    return;
+  }
+
+  // Store in localStorage so it persists across reloads
+  localStorage.setItem("userName", nameInput);
+
+  // Update welcome message in header
+  document.getElementById("userName").textContent = nameInput;
+  document.getElementById("userWelcome").style.display = "block";
+
+  // Close modal
+  closeWelcomeModal();
+}
+
+// Load saved username on refresh
+document.addEventListener("DOMContentLoaded", () => {
+  const savedName = localStorage.getItem("userName");
+  if (savedName) {
+    document.getElementById("userName").textContent = savedName;
+    document.getElementById("userWelcome").style.display = "block";
+    document.getElementById("welcomeModal").style.display = "none";
+  }
+});
+
 
         function showSection(sectionId) {
             // Hide all sections

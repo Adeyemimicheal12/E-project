@@ -4,9 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BidSpirit - Fine Arts & Antiques</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="eppro.css">
 </head>
+
+<!-- Welcome Modal -->
+    <div id="welcomeModal" class="modal welcome-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                Welcome to BidSpirit House
+                <span class="close" onclick="closeWelcomeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="firstName">Please enter your first name:</label>
+                    <input type="text" id="firstName" placeholder="Enter your first name">
+                </div>
+                <button class="btn" onclick="setUserName()">Enter Portal</button>
+            </div>
+        </div>
+    </div>
     <!-- Header -->
     <header class="header">
         <div class="header-content">
@@ -32,11 +49,6 @@
         <div class="hero-content">
             <h1>Discover Timeless Treasures</h1>
             <p>Fine Arts, Antiques & Collectibles from Around the World</p>
-            <div class="welcome-form" id="welcomeForm">
-                <input type="text" id="firstName" placeholder="Enter your first name" />
-                <button onclick="setWelcome()">Enter Portal</button>
-            </div>
-            <div id="welcomeMessage" class="welcome-message" style="display: none;"></div>
         </div>
     </section>
 
@@ -66,6 +78,7 @@
             <img src="smiley1.jpg" alt="">
             <h2>You are welcome to the home page</h2>
          </section>
+         
         <!-- Fine Art Section -->
         <section id="fine-art" class="section">
             <h2 class="section-title">Fine Art Collection</h2>
@@ -84,6 +97,54 @@
                         <h3 class="product-title">Modern Abstract</h3>
                         <p class="product-price">Starting Bid: $45,000</p>
                         <p class="product-description">Contemporary artwork with vibrant colors and bold strokes</p>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('Impressionist Landscape', '$89,000', 'A beautiful impressionist landscape capturing the essence of French countryside.')">
+                    <div class="product-image"><i class="fas fa-mountain"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Impressionist Landscape</h3>
+                        <p class="product-price">Starting Bid: $89,000</p>
+                        <p class="product-description">19th-century French impressionist masterpiece</p>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('Impressionist Landscape', '$89,000', 'A beautiful impressionist landscape capturing the essence of French countryside.')">
+                    <div class="product-image"><i class="fas fa-mountain"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Impressionist Landscape</h3>
+                        <p class="product-price">Starting Bid: $89,000</p>
+                        <p class="product-description">19th-century French impressionist masterpiece</p>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('Impressionist Landscape', '$89,000', 'A beautiful impressionist landscape capturing the essence of French countryside.')">
+                    <div class="product-image"><i class="fas fa-mountain"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Impressionist Landscape</h3>
+                        <p class="product-price">Starting Bid: $89,000</p>
+                        <p class="product-description">19th-century French impressionist masterpiece</p>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('Impressionist Landscape', '$89,000', 'A beautiful impressionist landscape capturing the essence of French countryside.')">
+                    <div class="product-image"><i class="fas fa-mountain"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Impressionist Landscape</h3>
+                        <p class="product-price">Starting Bid: $89,000</p>
+                        <p class="product-description">19th-century French impressionist masterpiece</p>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('Impressionist Landscape', '$89,000', 'A beautiful impressionist landscape capturing the essence of French countryside.')">
+                    <div class="product-image"><i class="fas fa-mountain"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Impressionist Landscape</h3>
+                        <p class="product-price">Starting Bid: $89,000</p>
+                        <p class="product-description">19th-century French impressionist masterpiece</p>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('Impressionist Landscape', '$89,000', 'A beautiful impressionist landscape capturing the essence of French countryside.')">
+                    <div class="product-image"><i class="fas fa-mountain"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Impressionist Landscape</h3>
+                        <p class="product-price">Starting Bid: $89,000</p>
+                        <p class="product-description">19th-century French impressionist masterpiece</p>
                     </div>
                 </div>
                 <div class="product-card" onclick="openModal('Impressionist Landscape', '$89,000', 'A beautiful impressionist landscape capturing the essence of French countryside.')">
@@ -117,6 +178,62 @@
                         <p class="product-description">14th-century porcelain with authentication certificate</p>
                     </div>
                 </div>
+                <div class="product-card" onclick="openModal('Ming Dynasty Vase', '$25,000', 'Authentic Ming Dynasty porcelain vase with blue and white glaze.')">
+                    <div class="product-image"><i class="fas fa-wine-bottle"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Ming Dynasty Vase</h3>
+                        <p class="product-price">Starting Bid: $25,000</p>
+                        <p class="product-description">14th-century porcelain with authentication certificate</p>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('Ming Dynasty Vase', '$25,000', 'Authentic Ming Dynasty porcelain vase with blue and white glaze.')">
+                    <div class="product-image"><i class="fas fa-wine-bottle"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Ming Dynasty Vase</h3>
+                        <p class="product-price">Starting Bid: $25,000</p>
+                        <p class="product-description">14th-century porcelain with authentication certificate</p>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('Ming Dynasty Vase', '$25,000', 'Authentic Ming Dynasty porcelain vase with blue and white glaze.')">
+                    <div class="product-image"><i class="fas fa-wine-bottle"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Ming Dynasty Vase</h3>
+                        <p class="product-price">Starting Bid: $25,000</p>
+                        <p class="product-description">14th-century porcelain with authentication certificate</p>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('Ming Dynasty Vase', '$25,000', 'Authentic Ming Dynasty porcelain vase with blue and white glaze.')">
+                    <div class="product-image"><i class="fas fa-wine-bottle"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Ming Dynasty Vase</h3>
+                        <p class="product-price">Starting Bid: $25,000</p>
+                        <p class="product-description">14th-century porcelain with authentication certificate</p>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('Ming Dynasty Vase', '$25,000', 'Authentic Ming Dynasty porcelain vase with blue and white glaze.')">
+                    <div class="product-image"><i class="fas fa-wine-bottle"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Ming Dynasty Vase</h3>
+                        <p class="product-price">Starting Bid: $25,000</p>
+                        <p class="product-description">14th-century porcelain with authentication certificate</p>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('Ming Dynasty Vase', '$25,000', 'Authentic Ming Dynasty porcelain vase with blue and white glaze.')">
+                    <div class="product-image"><i class="fas fa-wine-bottle"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Ming Dynasty Vase</h3>
+                        <p class="product-price">Starting Bid: $25,000</p>
+                        <p class="product-description">14th-century porcelain with authentication certificate</p>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('Ming Dynasty Vase', '$25,000', 'Authentic Ming Dynasty porcelain vase with blue and white glaze.')">
+                    <div class="product-image"><i class="fas fa-wine-bottle"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Ming Dynasty Vase</h3>
+                        <p class="product-price">Starting Bid: $25,000</p>
+                        <p class="product-description">14th-century porcelain with authentication certificate</p>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -130,6 +247,62 @@
                         <h3 class="product-title">Louis XVI Chair</h3>
                         <p class="product-price">Starting Bid: $8,500</p>
                         <p class="product-description">18th-century French chair with original upholstery</p>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('Chippendale Desk', '$12,000', 'Mahogany Chippendale desk with secret compartments.')">
+                    <div class="product-image"><i class="fas fa-table"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Chippendale Desk</h3>
+                        <p class="product-price">Starting Bid: $12,000</p>
+                        <p class="product-description">Solid mahogany with brass fittings</p>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('Chippendale Desk', '$12,000', 'Mahogany Chippendale desk with secret compartments.')">
+                    <div class="product-image"><i class="fas fa-table"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Chippendale Desk</h3>
+                        <p class="product-price">Starting Bid: $12,000</p>
+                        <p class="product-description">Solid mahogany with brass fittings</p>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('Chippendale Desk', '$12,000', 'Mahogany Chippendale desk with secret compartments.')">
+                    <div class="product-image"><i class="fas fa-table"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Chippendale Desk</h3>
+                        <p class="product-price">Starting Bid: $12,000</p>
+                        <p class="product-description">Solid mahogany with brass fittings</p>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('Chippendale Desk', '$12,000', 'Mahogany Chippendale desk with secret compartments.')">
+                    <div class="product-image"><i class="fas fa-table"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Chippendale Desk</h3>
+                        <p class="product-price">Starting Bid: $12,000</p>
+                        <p class="product-description">Solid mahogany with brass fittings</p>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('Chippendale Desk', '$12,000', 'Mahogany Chippendale desk with secret compartments.')">
+                    <div class="product-image"><i class="fas fa-table"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Chippendale Desk</h3>
+                        <p class="product-price">Starting Bid: $12,000</p>
+                        <p class="product-description">Solid mahogany with brass fittings</p>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('Chippendale Desk', '$12,000', 'Mahogany Chippendale desk with secret compartments.')">
+                    <div class="product-image"><i class="fas fa-table"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Chippendale Desk</h3>
+                        <p class="product-price">Starting Bid: $12,000</p>
+                        <p class="product-description">Solid mahogany with brass fittings</p>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('Chippendale Desk', '$12,000', 'Mahogany Chippendale desk with secret compartments.')">
+                    <div class="product-image"><i class="fas fa-table"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Chippendale Desk</h3>
+                        <p class="product-price">Starting Bid: $12,000</p>
+                        <p class="product-description">Solid mahogany with brass fittings</p>
                     </div>
                 </div>
                 <div class="product-card" onclick="openModal('Chippendale Desk', '$12,000', 'Mahogany Chippendale desk with secret compartments.')">
@@ -163,12 +336,118 @@
                         <p class="product-description">Rare first edition in excellent condition</p>
                     </div>
                 </div>
+                <div class="product-card" onclick="openModal('First Edition Book', '$5,500', 'First edition of a classic literary masterpiece.')">
+                    <div class="product-image"><i class="fas fa-book"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">First Edition Book</h3>
+                        <p class="product-price">Starting Bid: $5,500</p>
+                        <p class="product-description">Rare first edition in excellent condition</p>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('First Edition Book', '$5,500', 'First edition of a classic literary masterpiece.')">
+                    <div class="product-image"><i class="fas fa-book"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">First Edition Book</h3>
+                        <p class="product-price">Starting Bid: $5,500</p>
+                        <p class="product-description">Rare first edition in excellent condition</p>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('First Edition Book', '$5,500', 'First edition of a classic literary masterpiece.')">
+                    <div class="product-image"><i class="fas fa-book"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">First Edition Book</h3>
+                        <p class="product-price">Starting Bid: $5,500</p>
+                        <p class="product-description">Rare first edition in excellent condition</p>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('First Edition Book', '$5,500', 'First edition of a classic literary masterpiece.')">
+                    <div class="product-image"><i class="fas fa-book"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">First Edition Book</h3>
+                        <p class="product-price">Starting Bid: $5,500</p>
+                        <p class="product-description">Rare first edition in excellent condition</p>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('First Edition Book', '$5,500', 'First edition of a classic literary masterpiece.')">
+                    <div class="product-image"><i class="fas fa-book"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">First Edition Book</h3>
+                        <p class="product-price">Starting Bid: $5,500</p>
+                        <p class="product-description">Rare first edition in excellent condition</p>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('First Edition Book', '$5,500', 'First edition of a classic literary masterpiece.')">
+                    <div class="product-image"><i class="fas fa-book"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">First Edition Book</h3>
+                        <p class="product-price">Starting Bid: $5,500</p>
+                        <p class="product-description">Rare first edition in excellent condition</p>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('First Edition Book', '$5,500', 'First edition of a classic literary masterpiece.')">
+                    <div class="product-image"><i class="fas fa-book"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">First Edition Book</h3>
+                        <p class="product-price">Starting Bid: $5,500</p>
+                        <p class="product-description">Rare first edition in excellent condition</p>
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- Popular Items Section -->
         <section id="popular" class="section">
             <h2 class="section-title">Popular Items</h2>
+            <div class="product-grid">
+                <div class="product-card" onclick="openModal('Art Deco Sculpture', '$15,000', 'Bronze Art Deco sculpture by a famous artist.')">
+                    <div class="product-image"><i class="fas fa-chess-king"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Art Deco Sculpture</h3>
+                        <p class="product-price">Current Bid: $15,000</p>
+                        <p class="product-description">1925 bronze sculpture, signed original</p>
+                    </div>
+                </div>
+            </div>
+            <div class="product-grid">
+                <div class="product-card" onclick="openModal('Art Deco Sculpture', '$15,000', 'Bronze Art Deco sculpture by a famous artist.')">
+                    <div class="product-image"><i class="fas fa-chess-king"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Art Deco Sculpture</h3>
+                        <p class="product-price">Current Bid: $15,000</p>
+                        <p class="product-description">1925 bronze sculpture, signed original</p>
+                    </div>
+                </div>
+            </div>
+            <div class="product-grid">
+                <div class="product-card" onclick="openModal('Art Deco Sculpture', '$15,000', 'Bronze Art Deco sculpture by a famous artist.')">
+                    <div class="product-image"><i class="fas fa-chess-king"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Art Deco Sculpture</h3>
+                        <p class="product-price">Current Bid: $15,000</p>
+                        <p class="product-description">1925 bronze sculpture, signed original</p>
+                    </div>
+                </div>
+            </div>
+            <div class="product-grid">
+                <div class="product-card" onclick="openModal('Art Deco Sculpture', '$15,000', 'Bronze Art Deco sculpture by a famous artist.')">
+                    <div class="product-image"><i class="fas fa-chess-king"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Art Deco Sculpture</h3>
+                        <p class="product-price">Current Bid: $15,000</p>
+                        <p class="product-description">1925 bronze sculpture, signed original</p>
+                    </div>
+                </div>
+            </div>
+            <div class="product-grid">
+                <div class="product-card" onclick="openModal('Art Deco Sculpture', '$15,000', 'Bronze Art Deco sculpture by a famous artist.')">
+                    <div class="product-image"><i class="fas fa-chess-king"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Art Deco Sculpture</h3>
+                        <p class="product-price">Current Bid: $15,000</p>
+                        <p class="product-description">1925 bronze sculpture, signed original</p>
+                    </div>
+                </div>
+            </div>
             <div class="product-grid">
                 <div class="product-card" onclick="openModal('Art Deco Sculpture', '$15,000', 'Bronze Art Deco sculpture by a famous artist.')">
                     <div class="product-image"><i class="fas fa-chess-king"></i></div>
@@ -194,11 +473,111 @@
                     </div>
                 </div>
             </div>
+            <div class="product-grid">
+                <div class="product-card" onclick="openModal('Estate Jewelry Auction', 'Various', 'Upcoming auction featuring rare estate jewelry.')">
+                    <div class="product-image"><i class="fas fa-ring"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Estate Jewelry Auction</h3>
+                        <p class="product-price">Auction Date: Next Week</p>
+                        <p class="product-description">Preview available this weekend</p>
+                    </div>
+                </div>
+            </div>
+            <div class="product-grid">
+                <div class="product-card" onclick="openModal('Estate Jewelry Auction', 'Various', 'Upcoming auction featuring rare estate jewelry.')">
+                    <div class="product-image"><i class="fas fa-ring"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Estate Jewelry Auction</h3>
+                        <p class="product-price">Auction Date: Next Week</p>
+                        <p class="product-description">Preview available this weekend</p>
+                    </div>
+                </div>
+            </div>
+            <div class="product-grid">
+                <div class="product-card" onclick="openModal('Estate Jewelry Auction', 'Various', 'Upcoming auction featuring rare estate jewelry.')">
+                    <div class="product-image"><i class="fas fa-ring"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Estate Jewelry Auction</h3>
+                        <p class="product-price">Auction Date: Next Week</p>
+                        <p class="product-description">Preview available this weekend</p>
+                    </div>
+                </div>
+            </div>
+            <div class="product-grid">
+                <div class="product-card" onclick="openModal('Estate Jewelry Auction', 'Various', 'Upcoming auction featuring rare estate jewelry.')">
+                    <div class="product-image"><i class="fas fa-ring"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Estate Jewelry Auction</h3>
+                        <p class="product-price">Auction Date: Next Week</p>
+                        <p class="product-description">Preview available this weekend</p>
+                    </div>
+                </div>
+            </div>
+            <div class="product-grid">
+                <div class="product-card" onclick="openModal('Estate Jewelry Auction', 'Various', 'Upcoming auction featuring rare estate jewelry.')">
+                    <div class="product-image"><i class="fas fa-ring"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Estate Jewelry Auction</h3>
+                        <p class="product-price">Auction Date: Next Week</p>
+                        <p class="product-description">Preview available this weekend</p>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <!-- Completed Auctions Section -->
         <section id="completed" class="section">
             <h2 class="section-title">Recently Completed Auctions</h2>
+            <div class="product-grid">
+                <div class="product-card" onclick="openModal('Sold: Tiffany Lamp', '$45,000', 'This beautiful Tiffany lamp sold for $45,000.')">
+                    <div class="product-image"><i class="fas fa-lightbulb"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Sold: Tiffany Lamp</h3>
+                        <p class="product-price">Final Price: $45,000</p>
+                        <p class="product-description">Authentic Tiffany Studios lamp, circa 1910</p>
+                    </div>
+                </div>
+            </div>
+            <div class="product-grid">
+                <div class="product-card" onclick="openModal('Sold: Tiffany Lamp', '$45,000', 'This beautiful Tiffany lamp sold for $45,000.')">
+                    <div class="product-image"><i class="fas fa-lightbulb"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Sold: Tiffany Lamp</h3>
+                        <p class="product-price">Final Price: $45,000</p>
+                        <p class="product-description">Authentic Tiffany Studios lamp, circa 1910</p>
+                    </div>
+                </div>
+            </div>
+            <div class="product-grid">
+                <div class="product-card" onclick="openModal('Sold: Tiffany Lamp', '$45,000', 'This beautiful Tiffany lamp sold for $45,000.')">
+                    <div class="product-image"><i class="fas fa-lightbulb"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Sold: Tiffany Lamp</h3>
+                        <p class="product-price">Final Price: $45,000</p>
+                        <p class="product-description">Authentic Tiffany Studios lamp, circa 1910</p>
+                    </div>
+                </div>
+            </div>
+            <div class="product-grid">
+                <div class="product-card" onclick="openModal('Sold: Tiffany Lamp', '$45,000', 'This beautiful Tiffany lamp sold for $45,000.')">
+                    <div class="product-image"><i class="fas fa-lightbulb"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Sold: Tiffany Lamp</h3>
+                        <p class="product-price">Final Price: $45,000</p>
+                        <p class="product-description">Authentic Tiffany Studios lamp, circa 1910</p>
+                    </div>
+                </div>
+            </div>
+            <div class="product-grid">
+                <div class="product-card" onclick="openModal('Sold: Tiffany Lamp', '$45,000', 'This beautiful Tiffany lamp sold for $45,000.')">
+                    <div class="product-image"><i class="fas fa-lightbulb"></i></div>
+                    <div class="product-info">
+                        <h3 class="product-title">Sold: Tiffany Lamp</h3>
+                        <p class="product-price">Final Price: $45,000</p>
+                        <p class="product-description">Authentic Tiffany Studios lamp, circa 1910</p>
+                    </div>
+                </div>
+            </div>
             <div class="product-grid">
                 <div class="product-card" onclick="openModal('Sold: Tiffany Lamp', '$45,000', 'This beautiful Tiffany lamp sold for $45,000.')">
                     <div class="product-image"><i class="fas fa-lightbulb"></i></div>
@@ -459,6 +838,38 @@
             Welcome to BidSpirit • Current Date: <span id="currentDate"></span> • Time: <span id="currentTime"></span> • Location: <span id="userLocation">Loading...</span> • Featured Auction: Renaissance Masterpieces • Next Auction: Estate Jewelry Collection • Bid responsibly • Visit our gallery for preview
         </div>
     </div>
+
+    <footer class="footer">
+  <div class="footer-grid">
+    <div>
+      <h3>BidSpirit</h3>
+      <p>Your trusted destination for fine arts, antiques & collectibles auctions.</p>
+    </div>
+    <div>
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="#" onclick="showSection('home')">Home</a></li>
+        <li><a href="#" onclick="showSection('about')">About Us</a></li>
+        <li><a href="#" onclick="showSection('contact')">Contact</a></li>
+        <li><a href="#" onclick="showSection('feedback')">Feedback</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Follow Us</h3>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="footer-bottom">
+    &copy; 2025 BidSpirit. All rights reserved.
+  </div>
+</footer>
+
     </body>
     <script src="eproject.js"></script>
 </html>
