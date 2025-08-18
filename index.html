@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BidSpirit - Fine Arts & Antiques</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"> -->
+       <!-- AOS Library -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="eppro.css">
 </head>
     <!-- Header -->
@@ -66,6 +68,43 @@
             <img src="smiley1.jpg" alt="">
             <h2>You are welcome to the home page</h2>
          </section>
+             <!-- Auction Management Section -->
+    <section class="feature-section">
+        <div class="container">
+            <div class="feature-grid">
+                <div class="feature-image" data-aos="fade-right">
+                    <img src="https://cdn.prod.website-files.com/612f5131b9c94ecd0fe9c722/630df9fb92151d388dc1db63_Auction-Item-Page%20(4)%20(1).webp" alt="Real-time auction updates" />
+                </div>
+                <div class="feature-text" data-aos="fade-left" data-aos-delay="200">
+                    <h2>Real-time auction updates</h2>
+                    <p>Auction pages automatically update in real time, letting participants see all new bids and items as they go live, all without ever having to refresh a page.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mobile Notifications Section -->
+    <section class="notifications-section">
+        <div class="container">
+            <h2 data-aos="fade-up">Mobile bidding notifications</h2>
+            <p class="subtitle" data-aos="fade-up" data-aos-delay="100">Gamify your auction through instant bid notifications that allow bidders to be notified when they've won or are outbid.</p>
+            
+            <div class="notification-cards">
+                <div class="notification-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="emoji">📢</div>
+                    <p>Oh no, you've been outbid! Increase your max bid before time expires.</p>
+                </div>
+                <div class="notification-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="emoji">📢</div>
+                    <p>Hi, the Cooking Class for Two you tracked is now open for bids. Place your bid!</p>
+                </div>
+                <div class="notification-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="emoji">📢</div>
+                    <p>Congrats! You've won Super Salted Butter for $180. View your won item.</p>
+                </div>
+            </div>
+        </div>
+    </section>
         <!-- Fine Art Section -->
         <section id="fine-art" class="section">
             <h2 class="section-title">Fine Art Collection</h2>
@@ -461,4 +500,6 @@
     </div>
     </body>
     <script src="eproject.js"></script>
+      <!-- AOS Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 </html>

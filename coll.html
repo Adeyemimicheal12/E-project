@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BidSpirit - Collectibles Auction</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+                         /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1.2rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .navigator {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ff6b35;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .visitor-count {
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .welcome-user {
+            font-size: 1.1rem;
+            color: #ff6b35;
+            font-weight: bold;
+        }
+
+        /* Navigation */
+        .nvcontainer {
+            padding: 1rem 0;
+            position: sticky;
+            top: 80px;
+            z-index: 999;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid black;
+            margin-bottom: 5rem;
+        }
+
+        .nav-content {
+            /* max-width: 1200px; */
+            /* margin: 0 auto; */
+            display: flex;
+            /* justify-content: center; */
+            gap: 1rem;
+            /* padding: 0 2rem; */
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            color: black;
+            text-decoration: none;
+            padding: 0.8rem 0.5rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #f39c12);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .nav-item:hover::before {
+            left: 0;
+        }
+
+        .nav-item:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(45deg, #ff6b35, #e55a2e);
+        }
+
+        .headers {
+            /* background: linear-gradient(135deg, #8B5CF6 0%, #A855F7 25%, #C084FC 50%, #E879F9 75%, #F0ABFC 100%); */
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .headers::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255,255,255,0.1) 25%, 
+                rgba(255,255,255,0.2) 50%, 
+                rgba(255,255,255,0.1) 75%, 
+                transparent
+            );
+            animation: collectibleShine 3s ease-in-out infinite;
+        }
+
+        @keyframes collectibleShine {
+            0%, 100% { left: -100%; }
+            50% { left: 100%; }
+        }
+
+        .headers h2 {
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+            position: relative;
+            z-index: 2;
+            background: linear-gradient(45deg, #FFD700, #FF6B35, #F7931E, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: goldShimmer 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes goldShimmer {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(20deg); }
+        }
+
+        .collectible-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #FF6B35, #F7931E, #FFCC02);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 800;
+            margin-top: 1.5rem;
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+            position: relative;
+            z-index: 2;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .auction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .auction-card {
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            border: 3px solid transparent;
+            background-clip: padding-box;
+        }
+
+        .auction-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                #8B5CF6, #A855F7, #C084FC, #E879F9, #F0ABFC,
+                #FBBF24, #F59E0B, #EF4444, #EC4899, #8B5CF6
+            );
+            border-radius: 25px;
+            padding: 3px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            background-size: 300% 300%;
+            animation: gradientShift 4s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .auction-card:hover::before {
+            opacity: 1;
+        }
+
+        .auction-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.25);
+        }
+
+        .card-header {
+            position: relative;
+            overflow: hidden;
+            height: 280px;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .auction-card:hover .card-image {
+            transform: scale(1.1) rotate(2deg);
+        }
+
+        .rarity-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 5;
+        }
+
+        .legendary {
+            background: linear-gradient(135deg, #FFD700, #FF8C00);
+            animation: legendaryGlow 2s ease-in-out infinite alternate;
+        }
+
+        .ultra-rare {
+            background: linear-gradient(135deg, #FF1493, #8A2BE2);
+            animation: ultraRareGlow 2s ease-in-out infinite alternate;
+        }
+
+        .rare {
+            background: linear-gradient(135deg, #00CED1, #1E90FF);
+            animation: rareGlow 2s ease-in-out infinite alternate;
+        }
+
+        .vintage {
+            background: linear-gradient(135deg, #CD853F, #D2691E);
+            animation: vintageGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes legendaryGlow {
+            0% { box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4); }
+            100% { box-shadow: 0 4px 25px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.3); }
+        }
+
+        @keyframes ultraRareGlow {
+            0% { box-shadow: 0 4px 15px rgba(255, 20, 147, 0.4); }
+            100% { box-shadow: 0 4px 25px rgba(255, 20, 147, 0.8), 0 0 30px rgba(255, 20, 147, 0.3); }
+        }
+
+        @keyframes rareGlow {
+            0% { box-shadow: 0 4px 15px rgba(0, 206, 209, 0.4); }
+            100% { box-shadow: 0 4px 25px rgba(0, 206, 209, 0.8), 0 0 30px rgba(0, 206, 209, 0.3); }
+        }
+
+        @keyframes vintageGlow {
+            0% { box-shadow: 0 4px 15px rgba(205, 133, 63, 0.4); }
+            100% { box-shadow: 0 4px 25px rgba(205, 133, 63, 0.8), 0 0 30px rgba(205, 133, 63, 0.3); }
+        }
+
+        .condition-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .card-content {
+            padding: 2rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #1F2937;
+            margin-bottom: 0.8rem;
+            line-height: 1.3;
+        }
+
+        .card-type {
+            background: linear-gradient(135deg, #8B5CF6, #A855F7);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.2rem;
+            font-size: 0.9rem;
+            color: #6B7280;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .detail-value {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #1F2937;
+        }
+
+        .price-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .current-bid {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #8B5CF6, #A855F7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .countdown {
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+            color: white;
+            padding: 0.7rem 1.3rem;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+            letter-spacing: 1px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .bid-button {
+            width: 100%;
+            background: linear-gradient(135deg, #8B5CF6 0%, #A855F7 25%, #C084FC 75%, #E879F9 100%);
+            color: white;
+            border: none;
+            padding: 1.3rem;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bid-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .bid-button:hover::before {
+            left: 100%;
+        }
+
+        .bid-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(139, 92, 246, 0.5);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            margin: 1% auto;
+            padding: 0;
+            border-radius: 30px;
+            width: 95%;
+            max-width: 950px;
+            max-height: 95vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            border: 3px solid transparent;
+            background-clip: padding-box;
+        }
+
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #8B5CF6, #A855F7, #C084FC, #E879F9, #F0ABFC);
+            border-radius: 30px;
+            padding: 3px;
+            z-index: -1;
+            background-size: 300% 300%;
+            animation: gradientShift 4s ease infinite;
+        }
+
+        @keyframes modalSlideIn {
+            from { 
+                transform: translateY(-100px) scale(0.8); 
+                opacity: 0; 
+            }
+            to { 
+                transform: translateY(0) scale(1); 
+                opacity: 1; 
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #1F2937 0%, #374151 100%);
+            color: white;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: collectibleShine 3s ease-in-out infinite;
+        }
+
+        .close {
+            position: absolute;
+            right: 2rem;
+            top: 2rem;
+            color: white;
+            font-size: 3rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            z-index: 10;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .close:hover {
+            background: rgba(255,255,255,0.2);
+            transform: rotate(180deg);
+        }
+
+        .modal-body {
+            padding: 3rem;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .modal-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: #1F2937;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .modal-description {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #4B5563;
+            margin-bottom: 2.5rem;
+        }
+
+        .item-specs {
+            background: linear-gradient(135deg, #F3F4F6, #E5E7EB);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .spec-item {
+            text-align: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .spec-label {
+            font-size: 0.9rem;
+            color: #6B7280;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .spec-value {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #1F2937;
+        }
+
+        .bidding-section {
+            background: linear-gradient(135deg, #F9FAFB, #F3F4F6);
+            padding: 3rem;
+            border-radius: 25px;
+            margin-top: 2rem;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .bid-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .bid-info-item {
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .bid-info-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .bid-info-label {
+            font-size: 0.95rem;
+            color: #6B7280;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .bid-info-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #1F2937;
+        }
+
+        .place-bid-section {
+            display: flex;
+            gap: 2rem;
+            align-items: end;
+        }
+
+        .bid-input-group {
+            flex: 1;
+        }
+
+        .bid-input-group label {
+            display: block;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: #1F2937;
+            font-size: 1.2rem;
+        }
+
+        .bid-input {
+            width: 100%;
+            padding: 1.5rem;
+            border: 3px solid #E5E7EB;
+            border-radius: 15px;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            background: white;
+            font-weight: 600;
+        }
+
+        .bid-input:focus {
+            outline: none;
+            border-color: #8B5CF6;
+            box-shadow: 0 0 25px rgba(139, 92, 246, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .place-bid-button {
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+            color: white;
+            border: none;
+            padding: 1.5rem 3rem;
+            border-radius: 15px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .place-bid-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .place-bid-button:hover::before {
+            left: 100%;
+        }
+
+        .place-bid-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(239, 68, 68, 0.5);
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+            padding: 2rem;
+            border-radius: 20px;
+            margin-top: 2rem;
+            text-align: center;
+            display: none;
+            animation: successSlide 0.6s ease;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        @keyframes successSlide {
+            from { 
+                transform: translateY(-30px); 
+                opacity: 0; 
+                scale: 0.9;
+            }
+            to { 
+                transform: translateY(0); 
+                opacity: 1; 
+                scale: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .auction-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .place-bid-section {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            
+            .place-bid-button {
+                width: 100%;
+            }
+            
+            .modal-content {
+                width: 98%;
+                margin: 1% auto;
+            }
+            
+            .current-bid {
+                font-size: 1.5rem;
+            }
+            
+            .item-specs {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+             <!-- Header -->
+    <header class="header" data-aos="fade-down">
+        <div class="navigator">
+            <div class="logo">BidSpirit</div>
+            <div class="user-info">
+                <div class="visitor-count">
+                    Visitors: <span id="visitorCount">1,247</span>
+                </div>
+                <div class="welcome-user" id="userWelcome" style="display: none;">
+                    Welcome, <span id="userName"></span>!
+                </div>
+            </div>
+            </div>
+    </header>
+
+    <!-- Navigation -->
+     <nav class="nvcontainer">
+        <div class="nav-content">
+            <a href="homepage.html" class="nav-item">Home</a>
+            <a href="fine.html" class="nav-item">Fine Art</a>
+            <a href="amt.html" class="nav-item">Antiques</a>
+            <a href="fun.html" class="nav-item">Furniture</a>
+            <a href="coll.html" class="nav-item active">Collectibles</a>
+            <a href="pop.html" class="nav-item">Popular Items</a>
+            <a href="upc.html" class="nav-item">Upcoming Auctions</a>
+            <a href="com.html" class="nav-item">Completed</a>
+            <a href="#" class="nav-item">Gallery</a>
+            <a href="#" class="nav-item">Feedback</a>
+            <a href="#" class="nav-item">About Us</a>
+            <a href="#" class="nav-item">Contact</a>
+            <a href="#" class="nav-item">Site Map</a>
+        </div>
+     </nav>
+    <div class="headers">
+        <h2>Premium Collectibles</h2>
+        <div class="collectible-badge">🏆 Collector's Edition</div>
+    </div>
+
+    <div class="container">
+        <div class="auction-grid" id="auctionGrid">
+            <!-- Collectible auction items will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="auctionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle" class="modal-title"></h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <img id="modalImage" class="modal-image" src="" alt="">
+                <div id="modalType" class="card-type"></div>
+                <p id="modalDescription" class="modal-description"></p>
+                
+                <div class="item-specs" id="itemSpecs">
+                    <!-- Specifications will be populated by JavaScript -->
+                </div>
+                
+                <div class="bidding-section">
+                    <div class="bid-info">
+                        <div class="bid-info-item">
+                            <div class="bid-info-label">Current Bid</div>
+                            <div id="modalCurrentBid" class="bid-info-value">$0</div>
+                        </div>
+                        <div class="bid-info-item">
+                            <div class="bid-info-label">Time Remaining</div>
+                            <div id="modalCountdown" class="bid-info-value countdown">00:00:00</div>
+                        </div>
+                        <div class="bid-info-item">
+                            <div class="bid-info-label">Total Bids</div>
+                            <div id="modalBidCount" class="bid-info-value">0</div>
+                        </div>
+                        <div class="bid-info-item">
+                            <div class="bid-info-label">Condition</div>
+                            <div id="modalCondition" class="bid-info-value">-</div>
+                        </div>
+                    </div>
+                    
+                    <div class="place-bid-section">
+                        <div class="bid-input-group">
+                            <label for="bidAmount">Your Bid Amount ($)</label>
+                            <input type="number" id="bidAmount" class="bid-input" placeholder="Enter your bid">
+                        </div>
+                        <button id="placeBidBtn" class="place-bid-button">Place Bid</button>
+                    </div>
+                    
+                    <div id="successMessage" class="success-message">
+                        🎉 Congratulations! Your bid has been placed successfully! 🏆
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Collectible auction items data
+        const collectibleItems = [
+            {
+                id: 1,
+                title: "1998 Pokemon Charizard 1st Edition Base Set",
+                type: "Trading Card",
+                currentBid: 15750,
+                image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=400&h=300&fit=crop",
+                description: "The holy grail of Pokemon cards! This PSA 10 graded Charizard #4/102 from the 1st Edition Base Set is in pristine, gem mint condition. Features the iconic shadowless design and perfect centering. One of the most sought-after cards in the hobby with incredible investment potential. Authenticated and graded by PSA with a perfect 10 rating.",
+                endTime: new Date(Date.now() + 3*60*60*1000 + 24*60*1000 + 15*1000),
+                bidCount: 127,
+                rarity: "legendary",
+                condition: "PSA 10",
+                specs: {
+                    "Year": "1998",
+                    "Set": "Base Set 1st Ed",
+                    "Card Number": "#4/102",
+                    "Grading": "PSA 10 Gem Mint",
+                    "Rarity": "Holo Rare",
+                    "Language": "English"
+                }
+            },
+            {
+                id: 2,
+                title: "Amazing Spider-Man #1 (1963) CGC 8.5",
+                type: "Comic Book",
+                currentBid: 22400,
+                image: "https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?w=400&h=300&fit=crop",
+                description: "First appearance of Spider-Man in his own title! This incredible Silver Age key issue features the origin retold and first appearance of J. Jonah Jameson and the Chameleon. CGC 8.5 Very Fine+ condition with excellent eye appeal, bright colors, and minimal wear. A cornerstone of any serious comic collection and Marvel history.",
+                endTime: new Date(Date.now() + 5*60*60*1000 + 47*60*1000 + 30*1000),
+                bidCount: 89,
+                rarity: "ultra-rare",
+                condition: "CGC 8.5",
+                specs: {
+                    "Year": "1963",
+                    "Publisher": "Marvel Comics",
+                    "Issue": "Amazing Spider-Man #1",
+                    "Grading": "CGC 8.5 VF+",
+                    "Key Issue": "1st Solo Spider-Man",
+                    "Pages": "36 pages"
+                }
+            },
+            {
+                id: 3,
+                title: "1986 Fleer Michael Jordan Rookie Card #57",
+                type: "Sports Card",
+                currentBid: 18950,
+                image: "https://images.unsplash.com/photo-1571019613540-996a820a80e4?w=400&h=300&fit=crop",
+                description: "The most iconic basketball card ever produced! Michael Jordan's rookie card from the legendary 1986 Fleer set. PSA 9 Mint condition with perfect centering and sharp corners. This card represents not just basketball history but the pinnacle of sports card collecting. Jordan's rookie year performance makes this a true investment masterpiece.",
+                endTime: new Date(Date.now() + 2*60*60*1000 + 33*60*1000 + 45*1000),
+                bidCount: 156,
+                rarity: "legendary",
+                condition: "PSA 9",
+                specs: {
+                    "Year": "1986",
+                    "Set": "Fleer Basketball",
+                    "Card Number": "#57",
+                    "Grading": "PSA 9 Mint",
+                    "Player": "Michael Jordan",
+                    "Rookie Card": "Yes"
+                }
+            },
+            {
+                id: 4,
+                title: "Vintage 1977 Star Wars Luke Skywalker 12\" Figure",
+                type: "Action Figure",
+                currentBid: 3850,
+                image: "https://images.unsplash.com/photo-1601814933824-fd0b574dd592?w=400&h=300&fit=crop",
+                description: "Mint in sealed package! This incredible 1977 Kenner 12-inch Luke Skywalker figure is a true piece of Star Wars history. Complete with original lightsaber, blaster, and telescoping lightsaber feature. The package has never been opened and shows minimal shelf wear. One of the most sought-after vintage Star Wars collectibles from the original trilogy era.",
+                endTime: new Date(Date.now() + 4*60*60*1000 + 18*60*1000 + 20*1000),
+                bidCount: 73,
+                rarity: "vintage",
+                condition: "MOC",
+                specs: {
+                    "Year": "1977",
+                    "Manufacturer": "Kenner",
+                    "Size": "12 inches",
+                    "Condition": "MOC (Mint on Card)",
+                    "Series": "Original Star Wars",
+                    "Accessories": "Lightsaber, Blaster"
+                }
+            },
+            {
+                id: 5,
+                title: "Magic: The Gathering Black Lotus Alpha",
+                type: "Trading Card",
+                currentBid: 87500,
+                image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=400&h=300&fit=crop",
+                description: "The most powerful and valuable card in Magic: The Gathering history! This Alpha Black Lotus is in exceptional condition, professionally graded BGS 8.5. Known as the 'Holy Grail' of MTG, this card enables incredible plays and represents the pinnacle of collectible card games. From the very first Magic set printed in 1993, this is investment-grade gaming history.",
+                endTime: new Date(Date.now() + 6*60*60*1000 + 12*60*1000 + 55*1000),
+                bidCount: 234,
+                rarity: "legendary",
+                condition: "BGS 8.5",
+                specs: {
+                    "Year": "1993",
+                    "Set": "Alpha",
+                    "Grading": "BGS 8.5 NM-MT+",
+                    "Power Nine": "Yes",
+                    "Rarity": "Rare",
+                    "Mana Cost": "0"
+                }
+            },
+            {
+                id: 6,
+                title: "1959 Topps Willie Mays #564 PSA 8",
+                type: "Baseball Card",
+                currentBid: 12300,
+                image: "https://images.unsplash.com/photo-1566577739112-5180d4bf9390?w=400&h=300&fit=crop",
+                description: "The 'Say Hey Kid' in beautiful condition! This 1959 Topps Willie Mays card showcases one of baseball's greatest players during his prime. PSA 8 Near Mint-Mint condition with vibrant colors and excellent centering. Mays is considered one of the five greatest players ever, making this card a must-have for serious baseball collectors.",
+                endTime: new Date(Date.now() + 1*60*60*1000 + 52*60*1000 + 35*1000),
+                bidCount: 67,
+                rarity: "rare",
+                condition: "PSA 8",
+                specs: {
+                    "Year": "1959",
+                    "Set": "Topps Baseball",
+                    "Card Number": "#564",
+                    "Grading": "PSA 8 NM-MT",
+                    "Player": "Willie Mays",
+                    "Hall of Fame": "Yes"
+                }
+            },
+            {
+                id: 7,
+                title: "Vintage 1985 Transformers Optimus Prime G1",
+                type: "Action Figure",
+                currentBid: 5200,
+                image: "https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=400&h=300&fit=crop",
+                description: "The legendary Autobot leader in pristine condition! This Generation 1 Optimus Prime from 1985 is complete with trailer, accessories, and all original parts. No missing pieces, tight joints, and vibrant stickers intact. Represents the golden age of Transformers and 80s toy manufacturing excellence. A centerpiece for any serious collector.",
+                endTime: new Date(Date.now() + 7*60*60*1000 + 28*60*1000 + 10*1000),
+                bidCount: 94,
+                rarity: "vintage",
+                condition: "C9",
+                specs: {
+                    "Year": "1985",
+                    "Line": "Transformers G1",
+                    "Faction": "Autobot",
+                    "Condition": "C9 Near Mint",
+                    "Completeness": "100% Complete",
+                    "Manufacturer": "Hasbro/Takara"
+                }
+            },
+            {
+                id: 8,
+                title: "First Edition Shadowless Blastoise Pokemon Card",
+                type: "Trading Card",
+                currentBid: 8750,
+                image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=400&h=300&fit=crop",
+                description: "Iconic water-type starter evolution in mint condition! This PSA 9 1st Edition Base Set Shadowless Blastoise #2/102 is one of the 'Big 3' Pokemon cards alongside Charizard and Venusaur. Features the beloved turtle Pokemon with perfect artwork and excellent condition. Essential for completing the holy trinity of 1st edition starter evolutions.",
+                endTime: new Date(Date.now() + 3*60*60*1000 + 41*60*1000 + 25*1000),
+                bidCount: 112,
+                rarity: "ultra-rare",
+                condition: "PSA 9",
+                specs: {
+                    "Year": "1998",
+                    "Set": "Base Set 1st Ed",
+                    "Card Number": "#2/102",
+                    "Grading": "PSA 9 Mint",
+                    "Type": "Water",
+                    "Rarity": "Holo Rare"
+                }
+            }
+        ];
+
+        let currentItem = null;
+        let countdownIntervals = {};
+
+        // Initialize the auction grid
+        function initializeAuction() {
+            const grid = document.getElementById('auctionGrid');
+            
+            collectibleItems.forEach(item => {
+                const card = createAuctionCard(item);
+                grid.appendChild(card);
+                startCountdown(item.id, item.endTime);
+            });
+        }
+
+        // Create auction card HTML
+        function createAuctionCard(item) {
+            const card = document.createElement('div');
+            card.className = 'auction-card';
+            card.onclick = () => openModal(item);
+            
+            card.innerHTML = `
+                <div class="card-header">
+                    <img src="${item.image}" alt="${item.title}" class="card-image">
+                    <div class="rarity-badge ${item.rarity}">${item.rarity.replace('-', ' ')}</div>
+                    <div class="condition-badge">${item.condition}</div>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">${item.title}</h3>
+                    <span class="card-type">${item.type}</span>
+                    <div class="card-details">
+                        <div class="detail-item">
+                            <div class="detail-value">${item.bidCount}</div>
+                            <div>Bids</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-value">${item.condition}</div>
+                            <div>Grade</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-value">${item.specs.Year}</div>
+                            <div>Year</div>
+                        </div>
+                    </div>
+                    <div class="price-section">
+                        <div class="current-bid">${item.currentBid.toLocaleString()}</div>
+                        <div id="countdown-${item.id}" class="countdown">Loading...</div>
+                    </div>
+                    <button class="bid-button" onclick="event.stopPropagation(); openModal(${JSON.stringify(item).replace(/"/g, '&quot;')})">
+                        Bid Now
+                    </button>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Start countdown timer
+        function startCountdown(itemId, endTime) {
+            countdownIntervals[itemId] = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = endTime.getTime() - now;
+                
+                if (distance < 0) {
+                    clearInterval(countdownIntervals[itemId]);
+                    const countdownElements = document.querySelectorAll(`#countdown-${itemId}, #modalCountdown`);
+                    countdownElements.forEach(el => {
+                        if (el) el.innerHTML = "ENDED";
+                    });
+                    return;
+                }
+                
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                const countdownElement = document.getElementById(`countdown-${itemId}`);
+                if (countdownElement) {
+                    countdownElement.innerHTML = timeString;
+                }
+                
+                const modalCountdown = document.getElementById('modalCountdown');
+                if (modalCountdown && currentItem && currentItem.id === itemId) {
+                    modalCountdown.innerHTML = timeString;
+                }
+            }, 1000);
+        }
+
+        // Create specifications HTML
+        function createSpecsHTML(specs) {
+            return Object.entries(specs).map(([label, value]) => `
+                <div class="spec-item">
+                    <div class="spec-label">${label}</div>
+                    <div class="spec-value">${value}</div>
+                </div>
+            `).join('');
+        }
+
+        // Open modal
+        function openModal(item) {
+            currentItem = item;
+            const modal = document.getElementById('auctionModal');
+            
+            document.getElementById('modalTitle').textContent = item.title;
+            document.getElementById('modalImage').src = item.image;
+            document.getElementById('modalType').textContent = item.type;
+            document.getElementById('modalDescription').textContent = item.description;
+            document.getElementById('modalCurrentBid').textContent = `${item.currentBid.toLocaleString()}`;
+            document.getElementById('modalBidCount').textContent = item.bidCount;
+            document.getElementById('modalCondition').textContent = item.condition;
+            document.getElementById('itemSpecs').innerHTML = createSpecsHTML(item.specs);
+            
+            const minBid = item.currentBid + (item.currentBid >= 10000 ? 250 : 50);
+            document.getElementById('bidAmount').placeholder = `Minimum bid: ${minBid.toLocaleString()}`;
+            document.getElementById('bidAmount').min = minBid;
+            
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close modal
+        function closeModal() {
+            const modal = document.getElementById('auctionModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            currentItem = null;
+            
+            // Hide success message
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('bidAmount').value = '';
+        }
+
+        // Place bid
+        function placeBid() {
+            const bidAmount = parseFloat(document.getElementById('bidAmount').value);
+            const minBid = currentItem.currentBid + (currentItem.currentBid >= 10000 ? 250 : 50);
+            
+            if (!bidAmount || bidAmount < minBid) {
+                alert(`Please enter a bid amount of at least ${minBid.toLocaleString()}`);
+                return;
+            }
+            
+            // Update current bid and stats
+            currentItem.currentBid = bidAmount;
+            currentItem.bidCount++;
+            
+            // Update modal display
+            document.getElementById('modalCurrentBid').textContent = `${bidAmount.toLocaleString()}`;
+            document.getElementById('modalBidCount').textContent = currentItem.bidCount;
+            
+            const newMinBid = bidAmount + (bidAmount >= 10000 ? 250 : 50);
+            document.getElementById('bidAmount').placeholder = `Minimum bid: ${newMinBid.toLocaleString()}`;
+            document.getElementById('bidAmount').min = newMinBid;
+            document.getElementById('bidAmount').value = '';
+            
+            // Update card display
+            const cardElement = document.querySelector(`[onclick*="id\":${currentItem.id}"]`);
+            if (cardElement) {
+                const cardBid = cardElement.querySelector('.current-bid');
+                const cardBidCount = cardElement.querySelector('.detail-value');
+                
+                if (cardBid) cardBid.textContent = `${bidAmount.toLocaleString()}`;
+                if (cardBidCount) cardBidCount.textContent = currentItem.bidCount;
+            }
+            
+            // Show success message
+            document.getElementById('successMessage').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 5000);
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeAuction();
+            
+            // Modal close events
+            document.querySelector('.close').onclick = closeModal;
+            document.getElementById('auctionModal').onclick = function(event) {
+                if (event.target === this) {
+                    closeModal();
+                }
+            };
+            
+            // Place bid button
+            document.getElementById('placeBidBtn').onclick = placeBid;
+            
+            // Enter key in bid input
+            document.getElementById('bidAmount').addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    placeBid();
+                }
+            });
+            
+            // Escape key to close modal
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    closeModal();
+                }
+            });
+        });
+
+        // Simulate live bidding activity for collectibles
+        setInterval(() => {
+            if (Math.random() > 0.88) { // 12% chance every 15 seconds
+                const randomItem = collectibleItems[Math.floor(Math.random() * collectibleItems.length)];
+                const bidIncrease = randomItem.currentBid >= 10000 ? 
+                    Math.floor(Math.random() * 500) + 250 : 
+                    Math.floor(Math.random() * 150) + 50;
+                
+                // Don't update if it's the currently viewed item
+                if (!currentItem || currentItem.id !== randomItem.id) {
+                    randomItem.currentBid += bidIncrease;
+                    randomItem.bidCount++;
+                    
+                    // Update card display
+                    const cardElement = document.querySelector(`[onclick*="id\":${randomItem.id}"]`);
+                    if (cardElement) {
+                        const cardBid = cardElement.querySelector('.current-bid');
+                        const cardBidCount = cardElement.querySelector('.detail-value');
+                        
+                        if (cardBid) cardBid.textContent = `${randomItem.currentBid.toLocaleString()}`;
+                        if (cardBidCount) cardBidCount.textContent = randomItem.bidCount;
+                    }
+                }
+            }
+        }, 15000); // Check every 15 seconds
+
+        // Clean up intervals when page is unloaded
+        window.addEventListener('beforeunload', function() {
+            Object.values(countdownIntervals).forEach(interval => clearInterval(interval));
+        });
+    </script>
+</body>
+</html>

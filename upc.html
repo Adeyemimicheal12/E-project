@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BidSpirit - Upcoming Auctions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+                         /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1.2rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .navigator {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ff6b35;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .visitor-count {
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .welcome-user {
+            font-size: 1.1rem;
+            color: #ff6b35;
+            font-weight: bold;
+        }
+
+        /* Navigation */
+        .nvcontainer {
+            padding: 1rem 0;
+            position: sticky;
+            top: 80px;
+            z-index: 999;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid black;
+            margin-bottom: 5rem;
+        }
+
+        .nav-content {
+            /* max-width: 1200px; */
+            /* margin: 0 auto; */
+            display: flex;
+            /* justify-content: center; */
+            gap: 1rem;
+            /* padding: 0 2rem; */
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            color: black;
+            text-decoration: none;
+            padding: 0.8rem 0.5rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #f39c12);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .nav-item:hover::before {
+            left: 0;
+        }
+
+        .nav-item:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(45deg, #ff6b35, #e55a2e);
+        }
+
+        .headers::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-conic-gradient(
+                from 0deg,
+                transparent 0deg,
+                rgba(255,255,255,0.03) 5deg,
+                transparent 10deg
+            );
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .headers h2 {
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 3px 3px 8px rgba(0,0,0,0.5);
+            position: relative;
+            z-index: 2;
+            background: linear-gradient(45deg, #FFD700, #FFA500, #FF8C00, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: goldPulse 3s ease-in-out infinite;
+            text-align: center;
+        }
+
+        @keyframes goldPulse {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.02); filter: brightness(1.1); }
+        }
+
+        .coming-soon-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #FF6B35, #F7931E, #FFCC02, #FF6B35);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 800;
+            margin-top: 1.5rem;
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+            position: relative;
+            z-index: 2;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: comingSoonPulse 2s ease-in-out infinite;
+            background-size: 300% 300%;
+            animation: comingSoonPulse 2s ease-in-out infinite, gradientShift 4s ease infinite;
+        }
+
+        @keyframes comingSoonPulse {
+            0%, 100% { transform: scale(1) rotateZ(0deg); }
+            50% { transform: scale(1.05) rotateZ(1deg); }
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .filter-section {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: linear-gradient(135deg, #FF6B35, #F7931E);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+        }
+
+        .notification-setup {
+            background: rgba(16, 185, 129, 0.2);
+            border: 2px solid #10B981;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .notification-setup:hover {
+            background: rgba(16, 185, 129, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .auction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .upcoming-card {
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            border: 3px solid transparent;
+            background-clip: padding-box;
+        }
+
+        .upcoming-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                #667eea, #764ba2, #f093fb, #f5576c, 
+                #4facfe, #00f2fe, #43e97b, #38f9d7
+            );
+            border-radius: 25px;
+            padding: 3px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            background-size: 400% 400%;
+            animation: upcomingGradient 6s ease infinite;
+        }
+
+        @keyframes upcomingGradient {
+            0%, 100% { background-position: 0% 50%; }
+            25% { background-position: 100% 50%; }
+            50% { background-position: 50% 100%; }
+            75% { background-position: 50% 0%; }
+        }
+
+        .upcoming-card:hover::before {
+            opacity: 1;
+        }
+
+        .upcoming-card:hover {
+            transform: translateY(-20px) scale(1.03);
+            box-shadow: 0 35px 70px rgba(0,0,0,0.3);
+        }
+
+        .card-header {
+            position: relative;
+            overflow: hidden;
+            height: 300px;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+            filter: brightness(0.85);
+        }
+
+        .upcoming-card:hover .card-image {
+            transform: scale(1.1);
+            filter: brightness(1);
+        }
+
+        .preview-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, 
+                rgba(102, 126, 234, 0.8), 
+                rgba(118, 75, 162, 0.8)
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .upcoming-card:hover .preview-overlay {
+            opacity: 1;
+        }
+
+        .preview-text {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, #FF6B35, #F7931E);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+            animation: statusPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .estimate-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
+            color: #FFD700;
+            padding: 0.6rem 1.2rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            backdrop-filter: blur(5px);
+        }
+
+        .card-content {
+            padding: 2.5rem;
+        }
+
+        .card-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #1F2937;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .card-type {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .auction-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .detail-item {
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            padding: 1.2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .detail-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .detail-label {
+            font-size: 0.9rem;
+            color: #6B7280;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .detail-value {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #1F2937;
+        }
+
+        .starts-in {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .countdown-timer {
+            font-size: 1.5rem;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+            margin-top: 0.5rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .notify-btn {
+            flex: 1;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1.2rem;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .notify-btn:hover {
+            background: linear-gradient(135deg, #10B981, #059669);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        .notify-btn.active {
+            background: linear-gradient(135deg, #10B981, #059669);
+        }
+
+        .preview-btn {
+            flex: 1;
+            background: linear-gradient(135deg, #FF6B35, #F7931E);
+            color: white;
+            border: none;
+            padding: 1.2rem;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .preview-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.5);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.95);
+            backdrop-filter: blur(15px);
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            margin: 1% auto;
+            padding: 0;
+            border-radius: 30px;
+            width: 95%;
+            max-width: 1000px;
+            max-height: 95vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb, #f5576c);
+            border-radius: 30px;
+            padding: 3px;
+            z-index: -1;
+            background-size: 300% 300%;
+            animation: gradientShift 4s ease infinite;
+        }
+
+        @keyframes modalSlideIn {
+            from { 
+                transform: translateY(-100px) scale(0.8); 
+                opacity: 0; 
+            }
+            to { 
+                transform: translateY(0) scale(1); 
+                opacity: 1; 
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #1F2937 0%, #374151 100%);
+            color: white;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-conic-gradient(
+                from 0deg,
+                transparent 0deg,
+                rgba(255,255,255,0.05) 3deg,
+                transparent 6deg
+            );
+            animation: rotate 15s linear infinite;
+        }
+
+        .close {
+            position: absolute;
+            right: 2rem;
+            top: 2rem;
+            color: white;
+            font-size: 3rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            z-index: 10;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .close:hover {
+            background: rgba(255,255,255,0.2);
+            transform: rotate(180deg) scale(1.1);
+        }
+
+        .modal-body {
+            padding: 3rem;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 20px;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .modal-title {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #1F2937;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .modal-description {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #4B5563;
+            margin-bottom: 3rem;
+        }
+
+        .auction-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .info-card {
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .info-card h3 {
+            color: #667eea;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .info-card .value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #1F2937;
+        }
+
+        .notification-section {
+            background: linear-gradient(135deg, #10B981, #059669);
+            padding: 2.5rem;
+            border-radius: 25px;
+            color: white;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .notification-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .notification-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .notification-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+            padding: 1rem 2rem;
+            border-radius: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .notification-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .header h2 {
+                font-size: 2.5rem;
+            }
+            
+            .auction-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .filter-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .modal-content {
+                width: 98%;
+                margin: 1% auto;
+            }
+            
+            .auction-details {
+                grid-template-columns: 1fr;
+            }
+
+            .auction-info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .notification-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+               <!-- Header -->
+    <header class="header" data-aos="fade-down">
+        <div class="navigator">
+            <div class="logo">BidSpirit</div>
+            <div class="user-info">
+                <div class="visitor-count">
+                    Visitors: <span id="visitorCount">1,247</span>
+                </div>
+                <div class="welcome-user" id="userWelcome" style="display: none;">
+                    Welcome, <span id="userName"></span>!
+                </div>
+            </div>
+            </div>
+    </header>
+
+    <!-- Navigation -->
+     <nav class="nvcontainer">
+        <div class="nav-content">
+            <a href="homepage.html" class="nav-item">Home</a>
+            <a href="fine.html" class="nav-item">Fine Art</a>
+            <a href="amt.html" class="nav-item">Antiques</a>
+            <a href="fun.html" class="nav-item">Furniture</a>
+            <a href="coll.html" class="nav-item">Collectibles</a>
+            <a href="pop.html" class="nav-item">Popular Items</a>
+            <a href="upc.html" class="nav-item active">Upcoming Auctions</a>
+            <a href="com.html" class="nav-item">Completed</a>
+            <a href="#" class="nav-item">Gallery</a>
+            <a href="#" class="nav-item">Feedback</a>
+            <a href="#" class="nav-item">About Us</a>
+            <a href="#" class="nav-item">Contact</a>
+            <a href="#" class="nav-item">Site Map</a>
+        </div>
+     </nav>
+    <div class="headers">
+        <h2>Exclusive Upcoming Auctions</h2>
+        <div class="coming-soon-badge">🔥 Coming Soon</div>
+    </div>
+
+    <div class="container">
+        <div class="filter-section">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All Items</button>
+                <button class="filter-btn" data-filter="art">Fine Art</button>
+                <button class="filter-btn" data-filter="jewelry">Jewelry</button>
+                <button class="filter-btn" data-filter="collectibles">Collectibles</button>
+                <button class="filter-btn" data-filter="antiques">Antiques</button>
+            </div>
+            <button class="notification-setup">🔔 Setup Notifications</button>
+        </div>
+
+        <div class="auction-grid" id="auctionGrid">
+            <!-- Upcoming auction items will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="previewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle" class="modal-title"></h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <img id="modalImage" class="modal-image" src="" alt="">
+                <div id="modalType" class="card-type"></div>
+                <p id="modalDescription" class="modal-description"></p>
+                
+                <div class="auction-info-grid">
+                    <div class="info-card">
+                        <h3>Auction Starts</h3>
+                        <div id="modalStartTime" class="value">-</div>
+                    </div>
+                    <div class="info-card">
+                        <h3>Estimated Value</h3>
+                        <div id="modalEstimate" class="value">-</div>
+                    </div>
+                    <div class="info-card">
+                        <h3>Starting Bid</h3>
+                        <div id="modalStartingBid" class="value">-</div>
+                    </div>
+                    <div class="info-card">
+                        <h3>Reserve Price</h3>
+                        <div id="modalReserve" class="value">-</div>
+                    </div>
+                </div>
+
+                <div class="notification-section">
+                    <h3>Never Miss This Auction</h3>
+                    <p>Get notified when this auction goes live and stay ahead of other bidders!</p>
+                    <div class="notification-buttons">
+                        <button class="notification-btn">📧 Email Alert</button>
+                        <button class="notification-btn">📱 SMS Alert</button>
+                        <button class="notification-btn">🔔 Push Notification</button>
+                        <button class="notification-btn">📅 Calendar Reminder</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Upcoming auction items data
+        const upcomingItems = [
+            {
+                id: 1,
+                title: "Van Gogh Original Sketch - Provence Landscape",
+                type: "Fine Art",
+                category: "art",
+                image: "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=400&h=300&fit=crop",
+                description: "Extremely rare original pencil sketch by Vincent van Gogh, created during his time in Provence, France in 1889. This previously unknown work was discovered in a private estate collection and has been authenticated by leading Van Gogh experts. The sketch depicts the rolling hills and cypress trees characteristic of his later masterpieces. Provenance includes detailed documentation from the artist's estate and subsequent private collections. This represents a once-in-a-lifetime opportunity to own an authentic Van Gogh work.",
+                startTime: new Date(Date.now() + 2*24*60*60*1000 + 5*60*60*1000 + 30*60*1000), // 2 days, 5 hours, 30 minutes
+                estimatedValue: "$2,500,000 - $3,500,000",
+                startingBid: "$1,800,000",
+                reservePrice: "$2,200,000",
+                status: "Preview",
+                watchers: 1247
+            },
+            {
+                id: 2,
+                title: "Cartier Art Deco Diamond & Emerald Necklace",
+                type: "Fine Jewelry",
+                category: "jewelry",
+                image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=300&fit=crop",
+                description: "Magnificent Cartier Art Deco necklace from 1925, featuring 47 emerald-cut diamonds totaling 23.4 carats and 15 Colombian emeralds totaling 18.7 carats. Originally commissioned by European royalty, this masterpiece showcases Cartier's legendary craftsmanship during the Art Deco golden age. The geometric design features platinum settings with intricate millegrain detailing. Complete with original Cartier documentation and fitted presentation box. Recently exhibited at the Metropolitan Museum of Art's 'Cartier and the Arts' exhibition.",
+                startTime: new Date(Date.now() + 1*24*60*60*1000 + 8*60*60*1000 + 15*60*1000), // 1 day, 8 hours, 15 minutes
+                estimatedValue: "$800,000 - $1,200,000",
+                startingBid: "$650,000",
+                reservePrice: "$750,000",
+                status: "Preview",
+                watchers: 892
+            },
+            {
+                id: 3,
+                title: "1909-S VDB Lincoln Cent - PCGS MS65RB",
+                type: "Rare Coin",
+                category: "collectibles",
+                image: "https://images.unsplash.com/photo-1565365833727-25c7ac28c8b4?w=400&h=300&fit=crop",
+                description: "The holy grail of Lincoln cents! This 1909-S VDB penny is one of the most coveted coins in American numismatics. With only 484,000 minted, it represents the first year of Lincoln cent production and the controversy surrounding Victor David Brenner's initials. This example grades PCGS MS65RB (Mint State 65 Red-Brown) with exceptional eye appeal, sharp details, and minimal spotting. Perfect for completing a high-grade Lincoln cent collection or as a standalone investment piece.",
+                startTime: new Date(Date.now() + 5*24*60*60*1000 + 3*60*60*1000 + 45*60*1000), // 5 days, 3 hours, 45 minutes
+                estimatedValue: "$85,000 - $120,000",
+                startingBid: "$65,000",
+                reservePrice: "$80,000",
+                status: "Preview",
+                watchers: 567
+            },
+            {
+                id: 4,
+                title: "Ming Dynasty Porcelain Vase - Xuande Period",
+                type: "Asian Art",
+                category: "antiques",
+                image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
+                description: "Exceptional Ming Dynasty porcelain vase from the Xuande period (1425-1435). This museum-quality piece features the characteristic cobalt blue underglaze with dragons amid clouds motif. Standing 14 inches tall, it exemplifies the technical mastery of imperial Chinese ceramics during the Ming golden age. The six-character Xuande mark on the base confirms its attribution. Acquired from a distinguished European private collection and previously exhibited at the British Museum. Condition is remarkable with no restoration or damage.",
+                startTime: new Date(Date.now() + 3*24*60*60*1000 + 12*60*60*1000 + 20*60*1000), // 3 days, 12 hours, 20 minutes
+                estimatedValue: "$450,000 - $650,000",
+                startingBid: "$350,000",
+                reservePrice: "$400,000",
+                status: "Preview",
+                watchers: 423
+            },
+            {
+                id: 5,
+                title: "Honus Wagner T206 Baseball Card - PSA 3",
+                type: "Sports Memorabilia",
+                category: "collectibles",
+                image: "https://images.unsplash.com/photo-1566577739112-5180d4bf9390?w=400&h=300&fit=crop",
+                description: "The most famous and valuable baseball card in existence! This 1909-1911 T206 Honus Wagner card is graded PSA 3 (Very Good) with excellent eye appeal for the grade. Only 50-60 examples are known to exist, making this one of the rarest collectibles in sports memorabilia. Wagner, a Pittsburgh Pirates legend and Hall of Famer, allegedly had his card pulled from production, creating this legendary scarcity. This example shows strong color and image clarity with typical corner wear for the grade. Complete provenance documentation included.",
+                startTime: new Date(Date.now() + 7*24*60*60*1000 + 6*60*60*1000 + 10*60*1000), // 7 days, 6 hours, 10 minutes
+                estimatedValue: "$3,200,000 - $4,500,000",
+                startingBid: "$2,500,000",
+                reservePrice: "$3,000,000",
+                status: "Preview",
+                watchers: 1892
+            },
+            {
+                id: 6,
+                title: "Patek Philippe Perpetual Calendar Ref. 5970P",
+                type: "Luxury Watch",
+                category: "jewelry",
+                image: "https://images.unsplash.com/photo-1523170335258-f5c6c6bd6eaf?w=400&h=300&fit=crop",
+                description: "Extraordinary Patek Philippe Reference 5970P perpetual calendar chronograph in platinum. This discontinued reference represents the pinnacle of haute horlogerie, featuring a manual-winding movement with perpetual calendar complications including day, date, month, leap year, moon phases, and 24-hour indication. The salmon dial is particularly rare and desirable among collectors. Complete with original box, papers, and Patek Philippe archive extract confirming production date and specifications. Only worn occasionally and maintained by Patek Philippe service centers.",
+                startTime: new Date(Date.now() + 4*24*60*60*1000 + 14*60*60*1000 + 25*60*1000), // 4 days, 14 hours, 25 minutes
+                estimatedValue: "$750,000 - $950,000",
+                startingBid: "$600,000",
+                reservePrice: "$700,000",
+                status: "Preview",
+                watchers: 734
+            },
+            {
+                id: 7,
+                title: "First Edition Action Comics #1 - CGC 6.0",
+                type: "Comic Book",
+                category: "collectibles",
+                image: "https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?w=400&h=300&fit=crop",
+                description: "The comic book that started it all! First appearance of Superman in Action Comics #1 from June 1938. This CGC 6.0 (Fine) example is one of the most important comic books in history, marking the birth of the superhero genre. The cover shows minimal restoration with vibrant colors and solid structural integrity. All pages are attached and complete with good eye appeal for the grade. This represents the foundation of modern superhero mythology and remains the most sought-after comic book by collectors worldwide.",
+                startTime: new Date(Date.now() + 6*24*60*60*1000 + 9*60*60*1000 + 40*60*1000), // 6 days, 9 hours, 40 minutes
+                estimatedValue: "$2,800,000 - $3,600,000",
+                startingBid: "$2,200,000",
+                reservePrice: "$2,600,000",
+                status: "Preview",
+                watchers: 1567
+            },
+            {
+                id: 8,
+                title: "Fabergé Imperial Easter Egg - Empress Marie",
+                type: "Decorative Art",
+                category: "antiques",
+                image: "https://images.unsplash.com/photo-1608839316186-3c446efc6646?w=400&h=300&fit=crop",
+                description: "Exceptionally rare Fabergé Imperial Easter Egg commissioned by Tsar Alexander III for Empress Marie Feodorovna in 1891. This masterpiece features rose gold, diamonds, pearls, and translucent enamel work in the classic Fabergé style. The egg opens to reveal a miniature gold replica of the imperial crown set with diamonds and rubies. One of only 50 known Imperial eggs created by the House of Fabergé, this piece represents the pinnacle of Russian decorative arts. Survived the Russian Revolution and has been in a private collection for over 80 years.",
+                startTime: new Date(Date.now() + 8*24*60*60*1000 + 16*60*60*1000 + 55*60*1000), // 8 days, 16 hours, 55 minutes
+                estimatedValue: "$15,000,000 - $25,000,000",
+                startingBid: "$12,000,000",
+                reservePrice: "$14,000,000",
+                status: "Preview",
+                watchers: 2341
+            }
+        ];
+
+        let currentItem = null;
+        let countdownIntervals = {};
+        let notifiedItems = new Set();
+
+        // Initialize the auction grid
+        function initializeAuction() {
+            const grid = document.getElementById('auctionGrid');
+            
+            upcomingItems.forEach(item => {
+                const card = createUpcomingCard(item);
+                grid.appendChild(card);
+                startCountdown(item.id, item.startTime);
+            });
+
+            initializeFilters();
+        }
+
+        // Create upcoming auction card HTML
+        function createUpcomingCard(item) {
+            const card = document.createElement('div');
+            card.className = 'upcoming-card';
+            card.setAttribute('data-category', item.category);
+            card.onclick = () => openPreviewModal(item);
+            
+            card.innerHTML = `
+                <div class="card-header">
+                    <img src="${item.image}" alt="${item.title}" class="card-image">
+                    <div class="preview-overlay">
+                        <div class="preview-text">Preview</div>
+                    </div>
+                    <div class="status-badge">${item.status}</div>
+                    <div class="estimate-badge">${item.estimatedValue.split(' - ')[0]}</div>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">${item.title}</h3>
+                    <span class="card-type">${item.type}</span>
+                    <div class="auction-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Estimated Value</div>
+                            <div class="detail-value">${item.estimatedValue}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Starting Bid</div>
+                            <div class="detail-value">${item.startingBid}</div>
+                        </div>
+                    </div>
+                    <div class="starts-in">
+                        <div>Auction Starts In:</div>
+                        <div id="countdown-${item.id}" class="countdown-timer">Loading...</div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="notify-btn" onclick="event.stopPropagation(); toggleNotification(${item.id})">
+                            <span id="notify-text-${item.id}">🔔 Notify Me</span>
+                        </button>
+                        <button class="preview-btn" onclick="event.stopPropagation(); openPreviewModal(${JSON.stringify(item).replace(/"/g, '&quot;')})">
+                            👁️ Preview
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Start countdown timer
+        function startCountdown(itemId, startTime) {
+            countdownIntervals[itemId] = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = startTime.getTime() - now;
+                
+                if (distance < 0) {
+                    clearInterval(countdownIntervals[itemId]);
+                    const countdownElements = document.querySelectorAll(`#countdown-${itemId}`);
+                    countdownElements.forEach(el => {
+                        if (el) el.innerHTML = "LIVE NOW!";
+                    });
+                    return;
+                }
+                
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                let timeString = '';
+                if (days > 0) {
+                    timeString = `${days}d ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                } else {
+                    timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }
+                
+                const countdownElements = document.querySelectorAll(`#countdown-${itemId}`);
+                countdownElements.forEach(el => {
+                    if (el) el.innerHTML = timeString;
+                });
+            }, 1000);
+        }
+
+        // Initialize filter functionality
+        function initializeFilters() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const cards = document.querySelectorAll('.upcoming-card');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    // Add active class to clicked button
+                    btn.classList.add('active');
+
+                    const filter = btn.getAttribute('data-filter');
+                    
+                    cards.forEach(card => {
+                        if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                            card.style.display = 'block';
+                            setTimeout(() => {
+                                card.style.opacity = '1';
+                                card.style.transform = 'scale(1)';
+                            }, 100);
+                        } else {
+                            card.style.opacity = '0';
+                            card.style.transform = 'scale(0.8)';
+                            setTimeout(() => {
+                                card.style.display = 'none';
+                            }, 300);
+                        }
+                    });
+                });
+            });
+        }
+
+        // Toggle notification
+        function toggleNotification(itemId) {
+            const notifyBtn = document.querySelector(`#notify-text-${itemId}`);
+            const button = notifyBtn.parentElement;
+            
+            if (notifiedItems.has(itemId)) {
+                notifiedItems.delete(itemId);
+                notifyBtn.textContent = '🔔 Notify Me';
+                button.classList.remove('active');
+            } else {
+                notifiedItems.add(itemId);
+                notifyBtn.textContent = '✅ Notified';
+                button.classList.add('active');
+                
+                // Show success message
+                showNotification('Notification set! We\'ll alert you when this auction goes live.');
+            }
+        }
+
+        // Show notification message
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #10B981, #059669);
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 15px;
+                z-index: 10000;
+                font-weight: 600;
+                box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+                animation: slideInRight 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease forwards';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Format date for display
+        function formatDate(date) {
+            return date.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                timeZoneName: 'short'
+            });
+        }
+
+        // Open preview modal
+        function openPreviewModal(item) {
+            currentItem = item;
+            const modal = document.getElementById('previewModal');
+            
+            document.getElementById('modalTitle').textContent = item.title;
+            document.getElementById('modalImage').src = item.image;
+            document.getElementById('modalType').textContent = item.type;
+            document.getElementById('modalDescription').textContent = item.description;
+            document.getElementById('modalStartTime').textContent = formatDate(item.startTime);
+            document.getElementById('modalEstimate').textContent = item.estimatedValue;
+            document.getElementById('modalStartingBid').textContent = item.startingBid;
+            document.getElementById('modalReserve').textContent = item.reservePrice;
+            
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close modal
+        function closeModal() {
+            const modal = document.getElementById('previewModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            currentItem = null;
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeAuction();
+            
+            // Modal close events
+            document.querySelector('.close').onclick = closeModal;
+            document.getElementById('previewModal').onclick = function(event) {
+                if (event.target === this) {
+                    closeModal();
+                }
+            };
+            
+            // Notification buttons in modal
+            document.querySelectorAll('.notification-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const type = this.textContent.trim();
+                    showNotification(`${type} notification set for "${currentItem.title}"`);
+                    this.style.background = 'rgba(16, 185, 129, 0.3)';
+                    this.style.borderColor = '#10B981';
+                });
+            });
+            
+            // Global notification setup
+            document.querySelector('.notification-setup').onclick = function() {
+                showNotification('Global notifications enabled! You\'ll receive alerts for all upcoming auctions.');
+            };
+            
+            // Escape key to close modal
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    closeModal();
+                }
+            });
+        });
+
+        // Clean up intervals when page is unloaded
+        window.addEventListener('beforeunload', function() {
+            Object.values(countdownIntervals).forEach(interval => clearInterval(interval));
+        });
+
+        // Add CSS animations for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            @keyframes slideOutRight {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

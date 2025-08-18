@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BidSpirit - Furniture Auction</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+         /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1.2rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .navigator {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ff6b35;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .visitor-count {
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .welcome-user {
+            font-size: 1.1rem;
+            color: #ff6b35;
+            font-weight: bold;
+        }
+
+        /* Navigation */
+        .nvcontainer {
+            padding: 1rem 0;
+            position: sticky;
+            top: 80px;
+            z-index: 999;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid black;
+        }
+
+        .nav-content {
+            /* max-width: 1200px; */
+            /* margin: 0 auto; */
+            display: flex;
+            /* justify-content: center; */
+            gap: 1rem;
+            /* padding: 0 2rem; */
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            color: black;
+            text-decoration: none;
+            padding: 0.8rem 0.5rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #f39c12);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .nav-item:hover::before {
+            left: 0;
+        }
+
+        .nav-item:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(45deg, #ff6b35, #e55a2e);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            margin-top: 7rem;
+        }
+
+        .headers {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #F5F5DC;
+        }
+
+        .headers p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            font-style: italic;
+        }
+
+        .auction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .auction-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .auction-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .auction-card:hover .card-image {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-type {
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .price-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .current-bid {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #667eea;
+        }
+
+        .countdown {
+            background: linear-gradient(135deg, #ff416c, #ff4757);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .bid-button {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .bid-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            right: 1.5rem;
+            top: 1.5rem;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.3s ease;
+        }
+
+        .close:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .modal-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .bidding-section {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-top: 2rem;
+        }
+
+        .bid-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .bid-info-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .bid-info-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .bid-info-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .place-bid-section {
+            display: flex;
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .bid-input-group {
+            flex: 1;
+        }
+
+        .bid-input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .bid-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .bid-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .place-bid-button {
+            background: linear-gradient(135deg, #ff416c, #ff4757);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .place-bid-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 65, 108, 0.4);
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, #00c851, #007e33);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .headers h1 {
+                font-size: 2rem;
+            }
+            
+            .auction-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .place-bid-section {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .place-bid-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+           <!-- Header -->
+    <header class="header" data-aos="fade-down">
+        <div class="navigator">
+            <div class="logo">BidSpirit</div>
+            <div class="user-info">
+                <div class="visitor-count">
+                    Visitors: <span id="visitorCount">1,247</span>
+                </div>
+                <div class="welcome-user" id="userWelcome" style="display: none;">
+                    Welcome, <span id="userName"></span>!
+                </div>
+            </div>
+            </div>
+    </header>
+
+    <!-- Navigation -->
+     <nav class="nvcontainer">
+        <div class="nav-content">
+            <a href="homepage.html" class="nav-item">Home</a>
+            <a href="fine.html" class="nav-item">Fine Art</a>
+            <a href="amt.html" class="nav-item">Antiques</a>
+            <a href="fun.html" class="nav-item active">Furniture</a>
+            <a href="coll.html" class="nav-item">Collectibles</a>
+            <a href="pop.html" class="nav-item">Popular Items</a>
+            <a href="upc.html" class="nav-item">Upcoming Auctions</a>
+            <a href="com.html" class="nav-item">Completed</a>
+            <a href="#" class="nav-item">Gallery</a>
+            <a href="#" class="nav-item">Feedback</a>
+            <a href="#" class="nav-item">About Us</a>
+            <a href="#" class="nav-item">Contact</a>
+            <a href="#" class="nav-item">Site Map</a>
+        </div>
+     </nav>
+    <div class="headers">
+        <h2>Premium Furniture Auction</h2>
+    </div>
+
+    <div class="container">
+        <div class="auction-grid" id="auctionGrid">
+            <!-- Auction items will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="auctionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle" class="modal-title"></h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <img id="modalImage" class="modal-image" src="" alt="">
+                <div id="modalType" class="card-type"></div>
+                <p id="modalDescription" class="modal-description"></p>
+                
+                <div class="bidding-section">
+                    <div class="bid-info">
+                        <div class="bid-info-item">
+                            <div class="bid-info-label">Current Bid</div>
+                            <div id="modalCurrentBid" class="bid-info-value">$0</div>
+                        </div>
+                        <div class="bid-info-item">
+                            <div class="bid-info-label">Time Remaining</div>
+                            <div id="modalCountdown" class="bid-info-value countdown">00:00:00</div>
+                        </div>
+                        <div class="bid-info-item">
+                            <div class="bid-info-label">Total Bids</div>
+                            <div id="modalBidCount" class="bid-info-value">0</div>
+                        </div>
+                    </div>
+                    
+                    <div class="place-bid-section">
+                        <div class="bid-input-group">
+                            <label for="bidAmount">Your Bid Amount ($)</label>
+                            <input type="number" id="bidAmount" class="bid-input" placeholder="Enter your bid">
+                        </div>
+                        <button id="placeBidBtn" class="place-bid-button">Place Bid</button>
+                    </div>
+                    
+                    <div id="successMessage" class="success-message">
+                        Bid placed successfully! 🎉
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Furniture auction data
+        const furnitureItems = [
+            {
+                id: 1,
+                title: "Victorian Mahogany Dining Table",
+                type: "Dining Room",
+                currentBid: 2850,
+                image: "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=400&h=300&fit=crop",
+                description: "Exquisite Victorian mahogany dining table crafted in the 1890s. Features intricate carved legs and extends to seat 12 people. Original finish with minor restoration. Provenance includes estate documentation. Perfect centerpiece for formal dining rooms.",
+                endTime: new Date(Date.now() + 4*60*60*1000 + 23*60*1000 + 15*1000),
+                bidCount: 12
+            },
+            {
+                id: 2,
+                title: "Mid-Century Modern Sectional Sofa",
+                type: "Living Room",
+                currentBid: 1950,
+                image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=300&fit=crop",
+                description: "Iconic 1960s sectional sofa in original teal velvet upholstery. Designed by renowned mid-century furniture maker. Clean lines, teak wood frame, and modular design. Recently professionally cleaned and authenticated. A true collector's piece.",
+                endTime: new Date(Date.now() + 2*60*60*1000 + 45*60*1000 + 30*1000),
+                bidCount: 8
+            },
+            {
+                id: 3,
+                title: "Antique French Armoire",
+                type: "Bedroom",
+                currentBid: 3200,
+                image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop",
+                description: "18th century French provincial armoire in solid oak. Hand-carved details with original brass hardware. Interior features multiple compartments and hanging space. Exceptional condition with beautiful patina developed over centuries.",
+                endTime: new Date(Date.now() + 6*60*60*1000 + 12*60*1000 + 45*1000),
+                bidCount: 15
+            },
+            {
+                id: 4,
+                title: "Industrial Steel Bookshelf",
+                type: "Office",
+                currentBid: 890,
+                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop",
+                description: "Contemporary industrial bookshelf crafted from reclaimed steel and reclaimed wood. Five adjustable shelves with powder-coated finish. Perfect for modern lofts or industrial-themed spaces. Custom-made by artisan metalworker.",
+                endTime: new Date(Date.now() + 1*60*60*1000 + 38*60*1000 + 20*1000),
+                bidCount: 6
+            },
+            {
+                id: 5,
+                title: "Art Deco Vanity Set",
+                type: "Bedroom",
+                currentBid: 2100,
+                image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop",
+                description: "Stunning 1925 Art Deco vanity set with matching stool and mirror. Features geometric inlay patterns in mother-of-pearl and ebony. Original beveled mirror and all drawers function smoothly. Rare find from estate collection.",
+                endTime: new Date(Date.now() + 3*60*60*1000 + 55*60*1000 + 10*1000),
+                bidCount: 11
+            },
+            {
+                id: 6,
+                title: "Rustic Pine Dining Bench",
+                type: "Dining Room",
+                currentBid: 450,
+                image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop",
+                description: "Handcrafted rustic pine dining bench seats 4 comfortably. Made from reclaimed barn wood with natural edge details. Sturdy construction with mortise and tenon joints. Perfect for farmhouse or rustic decor themes.",
+                endTime: new Date(Date.now() + 5*60*60*1000 + 20*60*1000 + 55*1000),
+                bidCount: 4
+            },
+            {
+                id: 7,
+                title: "Designer Leather Recliner",
+                type: "Living Room",
+                currentBid: 1650,
+                image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=300&fit=crop",
+                description: "Premium Italian leather recliner by renowned designer. Top-grain leather in rich cognac color with contrast stitching. Electric reclining mechanism with USB charging ports. Like-new condition, barely used.",
+                endTime: new Date(Date.now() + 4*60*60*1000 + 42*60*1000 + 25*1000),
+                bidCount: 9
+            },
+            {
+                id: 8,
+                title: "Antique Writing Desk",
+                type: "Office",
+                currentBid: 1850,
+                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop",
+                description: "19th century mahogany writing desk with leather-inlaid top. Seven drawers with original brass pulls and working locks. Secret compartment discovered during authentication. Perfect for home office or study.",
+                endTime: new Date(Date.now() + 2*60*60*1000 + 28*60*1000 + 40*1000),
+                bidCount: 7
+            },
+            {
+                id: 9,
+                title: "Modern Glass Coffee Table",
+                type: "Living Room",
+                currentBid: 750,
+                image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=300&fit=crop",
+                description: "Contemporary tempered glass coffee table with sculptural chrome base. Designer piece featuring unique geometric support structure. Glass is scratch-resistant and easy to maintain. Perfect statement piece for modern interiors.",
+                endTime: new Date(Date.now() + 1*60*60*1000 + 15*60*1000 + 30*1000),
+                bidCount: 5
+            },
+            {
+                id: 10,
+                title: "Vintage Bar Cart",
+                type: "Dining Room",
+                currentBid: 680,
+                image: "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=400&h=300&fit=crop",
+                description: "1970s brass and glass bar cart on wheels. Two-tier design with mirrored shelves and bottle storage. Original condition with beautiful patina on brass frame. Perfect for entertaining and adds glamour to any space.",
+                endTime: new Date(Date.now() + 3*60*60*1000 + 8*60*1000 + 15*1000),
+                bidCount: 3
+            },
+            {
+                id: 11,
+                title: "Handcrafted Oak Wardrobe",
+                type: "Bedroom",
+                currentBid: 2950,
+                image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop",
+                description: "Custom-built solid oak wardrobe by master craftsman. Features hand-carved panels, soft-close hinges, and cedar lining. Multiple hanging areas and adjustable shelves. Built to last generations with traditional joinery methods.",
+                endTime: new Date(Date.now() + 5*60*60*1000 + 33*60*1000 + 50*1000),
+                bidCount: 13
+            },
+            {
+                id: 12,
+                title: "Executive Office Chair",
+                type: "Office",
+                currentBid: 1200,
+                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop",
+                description: "High-end executive chair in buttery leather with mahogany wood trim. Ergonomic design with lumbar support and height adjustment. Originally from corporate headquarters, lightly used. Perfect for home office or executive suite.",
+                endTime: new Date(Date.now() + 4*60*60*1000 + 18*60*1000 + 35*1000),
+                bidCount: 10
+            }
+        ];
+
+        let currentItem = null;
+        let countdownIntervals = {};
+
+        // Initialize the auction grid
+        function initializeAuction() {
+            const grid = document.getElementById('auctionGrid');
+            
+            furnitureItems.forEach(item => {
+                const card = createAuctionCard(item);
+                grid.appendChild(card);
+                startCountdown(item.id, item.endTime);
+            });
+        }
+
+        // Create auction card HTML
+        function createAuctionCard(item) {
+            const card = document.createElement('div');
+            card.className = 'auction-card';
+            card.onclick = () => openModal(item);
+            
+            card.innerHTML = `
+                <img src="${item.image}" alt="${item.title}" class="card-image">
+                <div class="card-content">
+                    <h3 class="card-title">${item.title}</h3>
+                    <span class="card-type">${item.type}</span>
+                    <div class="price-section">
+                        <div class="current-bid">$${item.currentBid.toLocaleString()}</div>
+                        <div id="countdown-${item.id}" class="countdown">Loading...</div>
+                    </div>
+                    <button class="bid-button" onclick="event.stopPropagation(); openModal(${JSON.stringify(item).replace(/"/g, '&quot;')})">
+                        Bid Now
+                    </button>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Start countdown timer
+        function startCountdown(itemId, endTime) {
+            countdownIntervals[itemId] = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = endTime.getTime() - now;
+                
+                if (distance < 0) {
+                    clearInterval(countdownIntervals[itemId]);
+                    document.getElementById(`countdown-${itemId}`).innerHTML = "ENDED";
+                    return;
+                }
+                
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                const countdownElement = document.getElementById(`countdown-${itemId}`);
+                if (countdownElement) {
+                    countdownElement.innerHTML = timeString;
+                }
+                
+                const modalCountdown = document.getElementById('modalCountdown');
+                if (modalCountdown && currentItem && currentItem.id === itemId) {
+                    modalCountdown.innerHTML = timeString;
+                }
+            }, 1000);
+        }
+
+        // Open modal
+        function openModal(item) {
+            currentItem = item;
+            const modal = document.getElementById('auctionModal');
+            
+            document.getElementById('modalTitle').textContent = item.title;
+            document.getElementById('modalImage').src = item.image;
+            document.getElementById('modalType').textContent = item.type;
+            document.getElementById('modalDescription').textContent = item.description;
+            document.getElementById('modalCurrentBid').textContent = `$${item.currentBid.toLocaleString()}`;
+            document.getElementById('modalBidCount').textContent = item.bidCount;
+            document.getElementById('bidAmount').placeholder = `Minimum bid: $${(item.currentBid + 50).toLocaleString()}`;
+            document.getElementById('bidAmount').min = item.currentBid + 50;
+            
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close modal
+        function closeModal() {
+            const modal = document.getElementById('auctionModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            currentItem = null;
+            
+            // Hide success message
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('bidAmount').value = '';
+        }
+
+        // Place bid
+        function placeBid() {
+            const bidAmount = parseFloat(document.getElementById('bidAmount').value);
+            const minBid = currentItem.currentBid + 50;
+            
+            if (!bidAmount || bidAmount < minBid) {
+                alert(`Please enter a bid amount of at least $${minBid.toLocaleString()}`);
+                return;
+            }
+            
+            // Update current bid
+            currentItem.currentBid = bidAmount;
+            currentItem.bidCount++;
+            
+            // Update modal display
+            document.getElementById('modalCurrentBid').textContent = `$${bidAmount.toLocaleString()}`;
+            document.getElementById('modalBidCount').textContent = currentItem.bidCount;
+            document.getElementById('bidAmount').placeholder = `Minimum bid: $${(bidAmount + 50).toLocaleString()}`;
+            document.getElementById('bidAmount').min = bidAmount + 50;
+            document.getElementById('bidAmount').value = '';
+            
+            // Update card display
+            const cardBid = document.querySelector(`[onclick*="id\":${currentItem.id}"] .current-bid`);
+            if (cardBid) {
+                cardBid.textContent = `$${bidAmount.toLocaleString()}`;
+            }
+            
+            // Show success message
+            document.getElementById('successMessage').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 3000);
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeAuction();
+            
+            // Modal close events
+            document.querySelector('.close').onclick = closeModal;
+            document.getElementById('auctionModal').onclick = function(event) {
+                if (event.target === this) {
+                    closeModal();
+                }
+            };
+            
+            // Place bid button
+            document.getElementById('placeBidBtn').onclick = placeBid;
+            
+            // Enter key in bid input
+            document.getElementById('bidAmount').addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    placeBid();
+                }
+            });
+            
+            // Escape key to close modal
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    closeModal();
+                }
+            });
+        });
+
+        // Clean up intervals when page is unloaded
+        window.addEventListener('beforeunload', function() {
+            Object.values(countdownIntervals).forEach(interval => clearInterval(interval));
+        });
+    </script>
+</body>
+</html>
