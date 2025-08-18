@@ -15,7 +15,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -72,60 +72,60 @@
             font-weight: bold;
         }
 
- /* Navigation */
-.nvcontainer {
-    padding: 1rem 0;
-    position: sticky;
-    top: 80px;
-    z-index: 999;
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid black;
-}
+        /* Navigation */
+        .nvcontainer {
+            padding: 1rem 0;
+            position: sticky;
+            top: 80px;
+            z-index: 999;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid black;
+        }
 
-.nav-content {
-     /* max-width: 1200px; */
-     /* margin: 0 auto; */
-     display: flex;
-     /* justify-content: center; */
-     gap: 1rem;
-     /* padding: 0 2rem; */
-     flex-wrap: wrap;
-}
+        .nav-content {
+            /* max-width: 1200px; */
+            /* margin: 0 auto; */
+            display: flex;
+            /* justify-content: center; */
+            gap: 1rem;
+            /* padding: 0 2rem; */
+            flex-wrap: wrap;
+        }
 
-.nav-item {
-    color: black;
-    text-decoration: none;
-    padding: 0.8rem 0.5rem;
-    border-radius: 25px;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
+        .nav-item {
+            color: black;
+            text-decoration: none;
+            padding: 0.8rem 0.5rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
 
-.nav-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(45deg, #f39c12);
-    transition: left 0.3s ease;
-    z-index: -1;
-}
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #f39c12);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
 
-.nav-item:hover::before {
-    left: 0;
-}
+        .nav-item:hover::before {
+            left: 0;
+        }
 
-.nav-item:hover {
-    color: white;
-    transform: translateY(-2px);
-}
+        .nav-item:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
 
-.nav-item.active {
-    background: linear-gradient(45deg, #ff6b35, #e55a2e);
-}
+        .nav-item.active {
+            background: linear-gradient(45deg, #ff6b35, #e55a2e);
+        }
 
         .container {
             max-width: 1400px;
@@ -643,11 +643,10 @@
             <a href="pop.html" class="nav-item">Popular Items</a>
             <a href="upc.html" class="nav-item">Upcoming Auctions</a>
             <a href="com.html" class="nav-item">Completed</a>
-            <a href="#" class="nav-item">Gallery</a>
-            <a href="#" class="nav-item">Feedback</a>
-            <a href="#" class="nav-item">About Us</a>
-            <a href="#" class="nav-item">Contact</a>
-            <a href="#" class="nav-item">Site Map</a>
+            <a href="gall.html" class="nav-item">Gallery</a>
+            <a href="feed.html" class="nav-item">Feedback</a>
+            <a href="about.html" class="nav-item">About Us</a>
+            <a href="contact.html" class="nav-item">Contact</a>
         </div>
      </nav>
 

@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - BidSpirit Auctions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1.2rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .navigator {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ff6b35;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .visitor-count {
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .welcome-user {
+            font-size: 1.1rem;
+            color: #ff6b35;
+            font-weight: bold;
+        }
+
+        /* Navigation */
+        .nvcontainer {
+            padding: 1rem 0;
+            position: sticky;
+            top: 80px;
+            z-index: 999;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid black;
+        }
+
+        .nav-content {
+            /* max-width: 1200px; */
+            /* margin: 0 auto; */
+            display: flex;
+            /* justify-content: center; */
+            gap: 1rem;
+            /* padding: 0 2rem; */
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            color: black;
+            text-decoration: none;
+            padding: 0.8rem 0.5rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #f39c12);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .nav-item:hover::before {
+            left: 0;
+        }
+
+        .nav-item:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(45deg, #ff6b35, #e55a2e);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, rgba(30, 60, 114, 0.9), rgba(42, 82, 152, 0.9)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23f0f2f5" width="1200" height="600"/><circle cx="200" cy="150" r="80" fill="%23e3f2fd" opacity="0.6"/><circle cx="800" cy="300" r="120" fill="%23fff3e0" opacity="0.4"/><circle cx="1000" cy="100" r="60" fill="%23f3e5f5" opacity="0.5"/></svg>');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ffeb3b;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 4rem 0;
+        }
+
+        .section-white {
+            background: white;
+            margin: 2rem 0;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 3rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: #1e3c72;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            text-align: center;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Mission & Vision */
+        .mission-vision {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .mission-card, .vision-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            border-left: 5px solid #ff6b35;
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            color: #1e3c72;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .card-text {
+            color: #555;
+            line-height: 1.7;
+        }
+
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .team-member {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .member-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            background-size: cover;
+            background-position: center;
+            border: 4px solid #e0e0e0;
+        }
+
+        .member-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #1e3c72;
+            margin-bottom: 0.5rem;
+        }
+
+        .member-title {
+            color: #ff6b35;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .member-bio {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Company Timeline */
+        .timeline {
+            position: relative;
+            margin: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #2a5298, #ff6b35);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .timeline-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: calc(50% - 2rem);
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: 0;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: calc(50% + 2rem);
+        }
+
+        .timeline-year {
+            position: absolute;
+            left: 50%;
+            top: 1rem;
+            transform: translateX(-50%);
+            background: #ff6b35;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .timeline-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #1e3c72;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-description {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Values Section */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .value-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .value-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .value-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .value-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #1e3c72;
+            margin-bottom: 1rem;
+        }
+
+        .value-description {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Contact CTA */
+        .contact-cta {
+            background: linear-gradient(135deg, #ff6b35 0%, #e55a2e 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 15px;
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .cta-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-text {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .btn-cta {
+            background: white;
+            color: #ff6b35;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Modal for team member details */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            background-size: cover;
+            background-position: center;
+            border: 4px solid #e0e0e0;
+        }
+
+        .close-btn {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 1.5rem;
+        }
+
+        .close-btn:hover {
+            background-color: #555;
+        }
+
+        /* Counter Animation */
+        .counter {
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-menu {
+                gap: 1rem;
+            }
+
+            .hero-title {
+                font-size: 2.2rem;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .mission-vision {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline::before {
+                left: 2rem;
+            }
+
+            .timeline-content {
+                width: calc(100% - 4rem);
+                margin-left: 4rem !important;
+            }
+
+            .timeline-year {
+                left: 2rem;
+                transform: none;
+            }
+
+            .section-white {
+                padding: 2rem;
+            }
+
+            .main-container {
+                padding: 0 1rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Footer Styles */
+        .footer {
+        background: #111;
+        color: #eee;
+        padding: 40px 20px 20px;
+        font-family: Arial, sans-serif;
+        }
+
+        .footer-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 30px;
+        margin-bottom: 20px;
+        }
+
+        .footer-section h3 {
+        margin-bottom: 15px;
+        color: #f39c12;
+        }
+
+        .footer-section p, 
+        .footer-section ul, 
+        .footer-section a {
+        font-size: 14px;
+        color: #ccc;
+        text-decoration: none;
+        }
+
+        .footer-section ul {
+        list-style: none;
+        padding: 0;
+        }
+
+        .footer-section ul li {
+        margin: 8px 0;
+        }
+
+        .footer-section ul li a:hover {
+        color: #f39c12;
+        transition: 0.3s;
+        }
+
+        /* Social Icons */
+        .social-icons a {
+        color: #ccc;
+        margin-right: 10px;
+        font-size: 18px;
+        transition: 0.3s;
+        }
+        .social-icons a:hover {
+        color: #f39c12;
+        }
+
+        /* Bottom Bar */
+        .footer-bottom {
+        border-top: 1px solid #444;
+        text-align: center;
+        padding-top: 15px;
+        font-size: 13px;
+        color: #aaa;
+        }
+    </style>
+</head>
+<body>
+               <!-- Header -->
+    <header class="header" data-aos="fade-down">
+        <div class="navigator">
+            <div class="logo">BidSpirit</div>
+            <div class="user-info">
+                <div class="visitor-count">
+                    Visitors: <span id="visitorCount">1,247</span>
+                </div>
+                <div class="welcome-user" id="userWelcome" style="display: none;">
+                    Welcome, <span id="userName"></span>!
+                </div>
+            </div>
+            </div>
+    </header>
+
+    <!-- Navigation -->
+     <nav class="nvcontainer">
+        <div class="nav-content">
+            <a href="homepage.html" class="nav-item">Home</a>
+            <a href="fine.html" class="nav-item">Fine Art</a>
+            <a href="amt.html" class="nav-item">Antiques</a>
+            <a href="fun.html" class="nav-item">Furniture</a>
+            <a href="coll.html" class="nav-item">Collectibles</a>
+            <a href="pop.html" class="nav-item">Popular Items</a>
+            <a href="upc.html" class="nav-item">Upcoming Auctions</a>
+            <a href="com.html" class="nav-item">Completed</a>
+            <a href="gall.html" class="nav-item">Gallery</a>
+            <a href="feed.html" class="nav-item">Feedback</a>
+            <a href="about.html" class="nav-item active">About Us</a>
+            <a href="contact.html" class="nav-item">Contact</a>
+        </div>
+     </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content fade-in-up">
+            <h1 class="hero-title">About BidSpirit</h1>
+            <p class="hero-subtitle">Connecting collectors with exceptional treasures through innovative online auctions since 2018</p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number counter" data-target="50000">0</span>
+                    <span class="stat-label">Happy Bidders</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number counter" data-target="25000">0</span>
+                    <span class="stat-label">Items Sold</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">$85M+</span>
+                    <span class="stat-label">Total Sales</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Mission & Vision -->
+        <section class="section animate-on-scroll">
+            <div class="section-white">
+                <h2 class="section-title">Our Mission & Vision</h2>
+                <div class="mission-vision">
+                    <div class="mission-card">
+                        <div class="card-icon">🎯</div>
+                        <h3 class="card-title">Our Mission</h3>
+                        <p class="card-text">To democratize the auction world by providing a transparent, accessible, and innovative platform where collectors, dealers, and enthusiasts can discover, bid on, and acquire exceptional items with confidence and ease.</p>
+                    </div>
+                    <div class="vision-card">
+                        <div class="card-icon">🌟</div>
+                        <h3 class="card-title">Our Vision</h3>
+                        <p class="card-text">To become the world's most trusted online auction platform, fostering a global community of passionate collectors while preserving the rich tradition of auctioneering in the digital age.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Company Story -->
+        <section class="section animate-on-scroll">
+            <div class="section-white">
+                <h2 class="section-title">Our Story</h2>
+                <p class="section-subtitle">Founded by auction industry veterans, BidSpirit was born from a vision to bring the excitement and accessibility of auctions to the digital world.</p>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-year">2018</div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-title">The Beginning</h3>
+                            <p class="timeline-description">BidSpirit was founded by three auction house veterans with over 40 years of combined experience. Our first auction featured 50 carefully curated art pieces.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-year">2019</div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-title">Platform Launch</h3>
+                            <p class="timeline-description">Launched our innovative bidding platform with real-time updates, mobile optimization, and advanced search capabilities. Reached 1,000 registered users.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-year">2020</div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-title">Global Expansion</h3>
+                            <p class="timeline-description">Expanded internationally and introduced virtual live bidding. Despite global challenges, we achieved record-breaking sales and user growth.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-year">2022</div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-title">Innovation Award</h3>
+                            <p class="timeline-description">Received the "Digital Innovation in Auctions" award and launched our AI-powered valuation tools and advanced authentication services.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-year">2024</div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-title">Market Leader</h3>
+                            <p class="timeline-description">Became one of the top 3 online auction platforms globally with over 50,000 active users and partnerships with leading auction houses worldwide.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section class="section animate-on-scroll">
+            <div class="section-white">
+                <h2 class="section-title">Meet Our Team</h2>
+                <p class="section-subtitle">Our passionate team of auction experts, technology innovators, and customer service specialists work together to create the best possible experience for our community.</p>
+                
+                <div class="team-grid">
+                    <div class="team-member" onclick="openTeamModal(0)">
+                        <div class="member-photo" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22><circle fill=%22%232a5298%22 cx=%22100%22 cy=%22100%22 r=%22100%22/><circle fill=%22%23fff%22 cx=%22100%22 cy=%2270%22 r=%2230%22/><ellipse fill=%22%23fff%22 cx=%22100%22 cy=%22160%22 rx=%2250%22 ry=%2240%22/></svg>')"></div>
+                        <h3 class="member-name">Adeyemi Kehinde Micheal</h3>
+                        <p class="member-title">Team Leader</p>
+                        <p class="member-bio">Former Christie's specialist with 15 years in fine art auctions. Harvard MBA with expertise in digital transformation.</p>
+                    </div>
+                    
+                    <div class="team-member" onclick="openTeamModal(1)">
+                        <div class="member-photo" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22><circle fill=%22%23ff6b35%22 cx=%22100%22 cy=%22100%22 r=%22100%22/><circle fill=%22%23fff%22 cx=%22100%22 cy=%2270%22 r=%2230%22/><ellipse fill=%22%23fff%22 cx=%22100%22 cy=%22160%22 rx=%2250%22 ry=%2240%22/></svg>')"></div>
+                        <h3 class="member-name">Kenzo Bamidele Osisanya</h3>
+                        <p class="member-title">Team Member</p>
+                        <p class="member-bio">Beyond coding, I’m driven by continuous growth and the goal of contributing to projects that make technology more accessible and valuable to people..</p>
+                    </div>
+                    
+                    <div class="team-member" onclick="openTeamModal(2)">
+                        <div class="member-photo" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22><circle fill=%22%234caf50%22 cx=%22100%22 cy=%22100%22 r=%22100%22/><circle fill=%22%23fff%22 cx=%22100%22 cy=%2270%22 r=%2230%22/><ellipse fill=%22%23fff%22 cx=%22100%22 cy=%22160%22 rx=%2250%22 ry=%2240%22/></svg>')"></div>
+                        <h3 class="member-name">Oluwatoyosi Adebayo Adetona</h3>
+                        <p class="member-title">Team Member</p>
+                        <p class="member-bio">I am currently pursuing an Advanced Diploma in Software Engineering and about to finish my first semester.</p>
+                    </div>
+                    
+                    <div class="team-member" onclick="openTeamModal(3)">
+                        <div class="member-photo" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22><circle fill=%22%239c27b0%22 cx=%22100%22 cy=%22100%22 r=%22100%22/><circle fill=%22%23fff%22 cx=%22100%22 cy=%2270%22 r=%2230%22/><ellipse fill=%22%23fff%22 cx=%22100%22 cy=%22160%22 rx=%2250%22 ry=%2240%22/></svg>')"></div>
+                        <h3 class="member-name">Matin Kassim</h3>
+                        <p class="member-title">Team Member</p>
+                        <p class="member-bio">Matin Kassim is a dedicated software engineering professional with a passion for building innovative digital solutions.</p>
+                    </div>
+                    <div class="team-member" onclick="openTeamModal(4)">
+                        <div class="member-photo" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22><circle fill=%22%239c27b0%22 cx=%22100%22 cy=%22100%22 r=%22100%22/><circle fill=%22%23fff%22 cx=%22100%22 cy=%2270%22 r=%2230%22/><ellipse fill=%22%23fff%22 cx=%22100%22 cy=%22160%22 rx=%2250%22 ry=%2240%22/></svg>')"></div>
+                        <h3 class="member-name">Musa Biliyamin Abubakar</h3>
+                        <p class="member-title">Team Member</p>
+                        <p class="member-bio">I'm a student at Aptech Lekki Center, currently working towards my Advanced Diploma in Software Engineering. </p>
+                    </div>
+                    <div class="team-member" onclick="openTeamModal(5)">
+                        <div class="member-photo" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22><circle fill=%22%239c27b0%22 cx=%22100%22 cy=%22100%22 r=%22100%22/><circle fill=%22%23fff%22 cx=%22100%22 cy=%2270%22 r=%2230%22/><ellipse fill=%22%23fff%22 cx=%22100%22 cy=%22160%22 rx=%2250%22 ry=%2240%22/></svg>')"></div>
+                        <h3 class="member-name">Raziel Soren Usoroh</h3>
+                        <p class="member-title">Team Member</p>
+                        <p class="member-bio"> I've always been captivated by technology, and this program is fueling my passion to create and innovate in the software realm.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Values Section -->
+        <section class="section animate-on-scroll">
+            <div class="section-white">
+                <h2 class="section-title">Our Values</h2>
+                <p class="section-subtitle">These core principles guide everything we do at BidSpirit</p>
+                
+                <div class="values-grid">
+                    <div class="value-card">
+                        <div class="value-icon">🛡️</div>
+                        <h3 class="value-title">Trust & Transparency</h3>
+                        <p class="value-description">We maintain the highest standards of authentication, condition reporting, and transparent bidding processes to ensure buyer confidence.</p>
+                    </div>
+                    
+                    <div class="value-card">
+                        <div class="value-icon">🚀</div>
+                        <h3 class="value-title">Innovation</h3>
+                        <p class="value-description">We continuously enhance our platform with cutting-edge technology to provide the most intuitive and efficient auction experience.</p>
+                    </div>
+                    
+                    <div class="value-card">
+                        <div class="value-icon">🤝</div>
+                        <h3 class="value-title">Community</h3>
+                        <p class="value-description">We foster a vibrant community of collectors, dealers, and art enthusiasts from around the world, creating lasting connections.</p>
+                    </div>
+                    
+                    <div class="value-card">
+                        <div class="value-icon">⭐</div>
+                        <h3 class="value-title">Excellence</h3>
+                        <p class="value-description">From curation to customer service, we strive for excellence in every aspect of the auction experience.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact CTA -->
+        <section class="contact-cta animate-on-scroll">
+            <h2 class="cta-title">Ready to Start Your Collection?</h2>
+            <p class="cta-text">Join thousands of satisfied collectors who trust BidSpirit for their auction needs</p>
+            <button class="btn-cta" onclick="location.href='#register'">Join BidSpirit Today</button>
+        </section>
+    </main>
+
+    <!-- Team Member Modal -->
+    <div class="modal" id="teamModal">
+        <div class="modal-content">
+            <div class="modal-photo" id="modalPhoto"></div>
+            <h3 id="modalName"></h3>
+            <p id="modalTitle" style="color: #ff6b35; font-weight: 500; margin-bottom: 1rem;"></p>
+            <p id="modalBio" style="color: #666; line-height: 1.6;"></p>
+            <p id="modalDetails" style="color: #555; margin-top: 1rem; line-height: 1.6;"></p>
+            <button class="close-btn" onclick="closeTeamModal()">Close</button>
+        </div>
+    </div>
+
+            <!-- Footer Section -->
+<footer class="footer">
+  <div class="footer-container">
+    <!-- About -->
+    <div class="footer-section">
+      <h3>About BidSpirit</h3>
+      <p>
+        BidSpirit is the world’s leading online marketplace for fine art,
+        antiques, furniture, and collectibles. Discover and bid from anywhere.
+      </p>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="footer-section">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Auctions</a></li>
+        <li><a href="#">Gallery</a></li>
+        <li><a href="#">Site Map</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact Info -->
+    <div class="footer-section">
+      <h3>Contact Us</h3>
+      <p>Email: info@bidspirit.com</p>
+      <p>Phone: +234-913-037-4485</p>
+      <p>Address: Lagos, Nigeria</p>
+    </div>
+
+    <!-- Social Media -->
+    <div class="footer-section">
+      <h3>Follow Us</h3>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 BidSpirit. All Rights Reserved.</p>
+  </div>
+</footer>
+
+    <script>
+        // Team member detailed information
+        const teamMembers = [
+            {
+                name: "Adeyemi Kehinde Micheal",
+                title: "Team Leader",
+                bio: " My passion lies in bridging the traditional world of fine art with innovative technology, making auctions more accessible and engaging for collectors worldwide.",
+                details: "I began my journey in the world of fine art and auctions with a passion for connecting collectors to timeless works. Over the years, I’ve developed expertise in digital innovation and online marketplaces, which inspired me to build BidSpirit—a platform designed to make fine art, antiques, and collectibles more accessible to a global audience.",
+                photo: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><circle fill='%232a5298' cx='100' cy='100' r='100'/><circle fill='%23fff' cx='100' cy='70' r='30'/><ellipse fill='%23fff' cx='100' cy='160' rx='50' ry='40'/></svg>"
+            },
+            {
+                name: "Kenzo Bamidele Osisanya",
+                title: "Team Member",
+                bio: " I am 25 and currently enrolled in Aptech with a strong passion for building innovative and efficient solutions through code. ",
+                details: " Over the years, I’ve gained experience in developing web and mobile applications using languages like JavaScript, Python, and Java, while also working with frameworks and tools such as React, Node.js, and Django. I enjoy solving complex problems, learning new technologies, and collaborating with teams to create software that has real-world impact.",
+                photo: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><circle fill='%23ff6b35' cx='100' cy='100' r='100'/><circle fill='%23fff' cx='100' cy='70' r='30'/><ellipse fill='%23fff' cx='100' cy='160' rx='50' ry='40'/></svg>"
+            },
+            {
+                name: "Oluwatoyosi Adebayo Adetona",
+                title: "Team Member",
+                bio: "I have a growing interest and skill set in cybersecurity, ensuring that the applications I build are not just beautiful and functional, but also secure.",
+                details: "I'm a passionate web developer with a strong foundation in HTML, CSS, and JavaScript, dedicated to building responsive and interactive websites. I enjoy turning ideas into functional, user-friendly digital experiences.",
+                photo: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><circle fill='%234caf50' cx='100' cy='100' r='100'/><circle fill='%23fff' cx='100' cy='70' r='30'/><ellipse fill='%23fff' cx='100' cy='160' rx='50' ry='40'/></svg>"
+            },
+            {
+                name: "Matin Kassim",
+                title: "Team Member",
+                bio: "He is a dedicated software engineering professional with a passion for building innovative digital solutions.",
+                details: "He works on designing, developing, and optimizing software systems while continuously expanding his expertise in modern technologies. Matin is currently pursuing an Advanced Diploma in Software Engineering (ADSE), where he continues to refine his technical expertise and explore emerging technologies. ",
+                photo: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><circle fill='%239c27b0' cx='100' cy='100' r='100'/><circle fill='%23fff' cx='100' cy='70' r='30'/><ellipse fill='%23fff' cx='100' cy='160' rx='50' ry='40'/></svg>"
+            },
+            {
+                name: "Musa Biliyamin Abubakar",
+                title: "Team Member",
+                bio: "I'm really passionate about web development and I'm excited to apply my skills to build cool and innovative solutions. ",
+                details: "I'm always learning and trying to stay up-to-date with the latest tech and trends in the industry.  I'm always looking for new challenges and opportunities to grow.",
+                photo: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><circle fill='%239c27b0' cx='100' cy='100' r='100'/><circle fill='%23fff' cx='100' cy='70' r='30'/><ellipse fill='%23fff' cx='100' cy='160' rx='50' ry='40'/></svg>"
+            },
+            {
+                name: "Raziel Soren Usoroh",
+                title: "Team Member",
+                bio: "i’m 19 years old. I'm currently diving deep into the Advanced Diploma in Software Engineering at Aptech",
+                details: " I've always been captivated by technology, and this program is fueling my passion to create and innovate in the software realm. I'm excited to see where this journey takes me and how I can contribute to the ever-evolving tech world.",
+                photo: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><circle fill='%239c27b0' cx='100' cy='100' r='100'/><circle fill='%23fff' cx='100' cy='70' r='30'/><ellipse fill='%23fff' cx='100' cy='160' rx='50' ry='40'/></svg>"
+            }
+        ];
+
+        // Initialize page
+        function init() {
+            setupScrollAnimations();
+            startCounterAnimations();
+        }
+
+        // Setup scroll animations
+        function setupScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Counter animation
+        function startCounterAnimations() {
+            const counters = document.querySelectorAll('.counter');
+            
+            counters.forEach(counter => {
+                const target = parseInt(counter.dataset.target);
+                const duration = 2000; // 2 seconds
+                const increment = target / (duration / 16); // 60fps
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    counter.textContent = Math.floor(current).toLocaleString();
+                }, 16);
+            });
+        }
+
+        // Open team member modal
+        function openTeamModal(index) {
+            const member = teamMembers[index];
+            const modal = document.getElementById('teamModal');
+            
+            document.getElementById('modalPhoto').style.backgroundImage = `url('${member.photo}')`;
+            document.getElementById('modalName').textContent = member.name;
+            document.getElementById('modalTitle').textContent = member.title;
+            document.getElementById('modalBio').textContent = member.bio;
+            document.getElementById('modalDetails').textContent = member.details;
+            
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close team member modal
+        function closeTeamModal() {
+            const modal = document.getElementById('teamModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal on outside click
+        document.getElementById('teamModal').onclick = function(e) {
+            if (e.target === this) {
+                closeTeamModal();
+            }
+        }
+
+        // Close modal on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeTeamModal();
+            }
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', init);
+
+        // Add some interactive hover effects
+        document.querySelectorAll('.team-member').forEach(member => {
+            member.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px) scale(1.02)';
+            });
+            
+            member.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Add parallax effect to hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const heroSection = document.querySelector('.hero-section');
+            if (heroSection) {
+                heroSection.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+
+        // Add typing effect to hero subtitle
+        function typeWriter(element, text, speed = 50) {
+            let i = 0;
+            element.textContent = '';
+            
+            function type() {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            
+            type();
+        }
+
+        // Start typing effect after page load
+        setTimeout(() => {
+            const subtitle = document.querySelector('.hero-subtitle');
+            const originalText = subtitle.textContent;
+            typeWriter(subtitle, originalText, 30);
+        }, 1000);
+    </script>
+</body>
+</html>

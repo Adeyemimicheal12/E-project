@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback - BidSpirit Auctions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+                       /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1.2rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .navigator {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ff6b35;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .visitor-count {
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .welcome-user {
+            font-size: 1.1rem;
+            color: #ff6b35;
+            font-weight: bold;
+        }
+
+        /* Navigation */
+        .nvcontainer {
+            padding: 1rem 0;
+            position: sticky;
+            top: 80px;
+            z-index: 999;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid black;
+        }
+
+        .nav-content {
+            /* max-width: 1200px; */
+            /* margin: 0 auto; */
+            display: flex;
+            /* justify-content: center; */
+            gap: 1rem;
+            /* padding: 0 2rem; */
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            color: black;
+            text-decoration: none;
+            padding: 0.8rem 0.5rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #f39c12);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .nav-item:hover::before {
+            left: 0;
+        }
+
+        .nav-item:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(45deg, #ff6b35, #e55a2e);
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            margin-top: 5rem;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            color: #1e3c72;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Feedback Form */
+        .feedback-form {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            color: #1e3c72;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #2a5298;
+            box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+            font-size: 1rem;
+        }
+
+        /* Star Rating */
+        .star-rating {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .star {
+            font-size: 2rem;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .star:hover,
+        .star.active {
+            color: #ffd700;
+        }
+
+        .rating-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        /* Feedback Type Cards */
+        .feedback-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feedback-type {
+            border: 2px solid #e0e0e0;
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .feedback-type:hover {
+            border-color: #2a5298;
+        }
+
+        .feedback-type.selected {
+            border-color: #2a5298;
+            background-color: #e3f2fd;
+        }
+
+        .feedback-type-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feedback-type-label {
+            font-weight: 500;
+            color: #333;
+        }
+
+        /* Previous Feedback */
+        .previous-feedback {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .feedback-item {
+            border-bottom: 1px solid #e0e0e0;
+            padding: 1.5rem 0;
+        }
+
+        .feedback-item:last-child {
+            border-bottom: none;
+        }
+
+        .feedback-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .feedback-user {
+            font-weight: 600;
+            color: #1e3c72;
+        }
+
+        .feedback-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .feedback-rating {
+            color: #ffd700;
+            margin-bottom: 0.5rem;
+        }
+
+        .feedback-text {
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .feedback-status {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+
+        .status-resolved {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-pending {
+            background-color: #fff3e0;
+            color: #f57c00;
+        }
+
+        /* Submit Button */
+        .submit-section {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #ff6b35 0%, #e55a2e 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+        }
+
+        .btn-submit:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Success Message */
+        .success-message {
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+            color: #2e7d32;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 2rem;
+            display: none;
+        }
+
+        /* Error Styles */
+        .error {
+            border-color: #f44336 !important;
+        }
+
+        .error-message {
+            color: #f44336;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Character Counter */
+        .character-counter {
+            text-align: right;
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.3rem;
+        }
+
+        .character-counter.warning {
+            color: #ff6b35;
+        }
+
+        .character-counter.error {
+            color: #f44336;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-menu {
+                gap: 1rem;
+            }
+
+            .main-container {
+                padding: 1rem;
+            }
+
+            .feedback-form {
+                padding: 1.5rem;
+            }
+
+            .star-rating {
+                justify-content: center;
+            }
+
+            .feedback-types {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+                /* Footer Styles */
+        .footer {
+        background: #111;
+        color: #eee;
+        padding: 40px 20px 20px;
+        font-family: Arial, sans-serif;
+        margin-top: 5rem;
+        }
+
+        .footer-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 30px;
+        margin-bottom: 20px;
+        }
+
+        .footer-section h3 {
+        margin-bottom: 15px;
+        color: #f39c12;
+        }
+
+        .footer-section p, 
+        .footer-section ul, 
+        .footer-section a {
+        font-size: 14px;
+        color: #ccc;
+        text-decoration: none;
+        }
+
+        .footer-section ul {
+        list-style: none;
+        padding: 0;
+        }
+
+        .footer-section ul li {
+        margin: 8px 0;
+        }
+
+        .footer-section ul li a:hover {
+        color: #f39c12;
+        transition: 0.3s;
+        }
+
+        /* Social Icons */
+        .social-icons a {
+        color: #ccc;
+        margin-right: 10px;
+        font-size: 18px;
+        transition: 0.3s;
+        }
+        .social-icons a:hover {
+        color: #f39c12;
+        }
+
+        /* Bottom Bar */
+        .footer-bottom {
+        border-top: 1px solid #444;
+        text-align: center;
+        padding-top: 15px;
+        font-size: 13px;
+        color: #aaa;
+        }
+    </style>
+</head>
+<body>
+        <!-- Header -->
+    <header class="header" data-aos="fade-down">
+        <div class="navigator">
+            <div class="logo">BidSpirit</div>
+            <div class="user-info">
+                <div class="visitor-count">
+                    Visitors: <span id="visitorCount">1,247</span>
+                </div>
+                <div class="welcome-user" id="userWelcome" style="display: none;">
+                    Welcome, <span id="userName"></span>!
+                </div>
+            </div>
+            </div>
+    </header>
+
+    <!-- Navigation -->
+     <nav class="nvcontainer">
+        <div class="nav-content">
+            <a href="homepage.html" class="nav-item">Home</a>
+            <a href="fine.html" class="nav-item">Fine Art</a>
+            <a href="amt.html" class="nav-item">Antiques</a>
+            <a href="fun.html" class="nav-item">Furniture</a>
+            <a href="coll.html" class="nav-item">Collectibles</a>
+            <a href="pop.html" class="nav-item">Popular Items</a>
+            <a href="upc.html" class="nav-item">Upcoming Auctions</a>
+            <a href="com.html" class="nav-item">Completed</a>
+            <a href="gall.html" class="nav-item">Gallery</a>
+            <a href="feed.html" class="nav-item active">Feedback</a>
+            <a href="about.html" class="nav-item">About Us</a>
+            <a href="contact.html" class="nav-item">Contact</a>
+        </div>
+     </nav>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">Feedback & Support</h1>
+            <p class="page-subtitle">We value your feedback and are committed to providing the best auction experience. Share your thoughts, report issues, or suggest improvements.</p>
+        </div>
+
+        <!-- Success Message -->
+        <div class="success-message" id="successMessage">
+            <h3>Thank you for your feedback!</h3>
+            <p>Your message has been received and will be reviewed by our team within 24 hours.</p>
+        </div>
+
+        <!-- Feedback Form -->
+        <div class="feedback-form fade-in">
+            <form id="feedbackForm">
+                <!-- Feedback Type Selection -->
+                <div class="form-section">
+                    <h2 class="section-title">What type of feedback would you like to share?</h2>
+                    <div class="feedback-types">
+                        <div class="feedback-type" data-type="general">
+                            <div class="feedback-type-icon">💬</div>
+                            <div class="feedback-type-label">General Feedback</div>
+                        </div>
+                        <div class="feedback-type" data-type="bug">
+                            <div class="feedback-type-icon">🐛</div>
+                            <div class="feedback-type-label">Bug Report</div>
+                        </div>
+                        <div class="feedback-type" data-type="feature">
+                            <div class="feedback-type-icon">💡</div>
+                            <div class="feedback-type-label">Feature Request</div>
+                        </div>
+                        <div class="feedback-type" data-type="complaint">
+                            <div class="feedback-type-icon">⚠️</div>
+                            <div class="feedback-type-label">Complaint</div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="feedbackType" name="feedbackType" required>
+                    <div class="error-message" id="typeError"></div>
+                </div>
+
+                <!-- Overall Rating -->
+                <div class="form-section">
+                    <h2 class="section-title">How would you rate your overall experience?</h2>
+                    <div class="star-rating" id="overallRating">
+                        <span class="star" data-rating="1">★</span>
+                        <span class="star" data-rating="2">★</span>
+                        <span class="star" data-rating="3">★</span>
+                        <span class="star" data-rating="4">★</span>
+                        <span class="star" data-rating="5">★</span>
+                    </div>
+                    <div class="rating-labels">
+                        <span>Poor</span>
+                        <span>Fair</span>
+                        <span>Good</span>
+                        <span>Very Good</span>
+                        <span>Excellent</span>
+                    </div>
+                    <input type="hidden" id="overallRatingValue" name="overallRating" required>
+                    <div class="error-message" id="ratingError"></div>
+                </div>
+
+                <!-- Specific Ratings -->
+                <div class="form-section">
+                    <h2 class="section-title">Rate specific aspects</h2>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Website Usability</label>
+                        <div class="star-rating" data-category="usability">
+                            <span class="star" data-rating="1">★</span>
+                            <span class="star" data-rating="2">★</span>
+                            <span class="star" data-rating="3">★</span>
+                            <span class="star" data-rating="4">★</span>
+                            <span class="star" data-rating="5">★</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Auction Process</label>
+                        <div class="star-rating" data-category="auction">
+                            <span class="star" data-rating="1">★</span>
+                            <span class="star" data-rating="2">★</span>
+                            <span class="star" data-rating="3">★</span>
+                            <span class="star" data-rating="4">★</span>
+                            <span class="star" data-rating="5">★</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Customer Service</label>
+                        <div class="star-rating" data-category="service">
+                            <span class="star" data-rating="1">★</span>
+                            <span class="star" data-rating="2">★</span>
+                            <span class="star" data-rating="3">★</span>
+                            <span class="star" data-rating="4">★</span>
+                            <span class="star" data-rating="5">★</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="form-section">
+                    <h2 class="section-title">Contact Information</h2>
+                    <div class="form-group">
+                        <label for="name" class="form-label">Full Name *</label>
+                        <input type="text" id="name" name="name" class="form-input" required>
+                        <div class="error-message" id="nameError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address *</label>
+                        <input type="email" id="email" name="email" class="form-input" required>
+                        <div class="error-message" id="emailError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone" class="form-label">Phone Number (Optional)</label>
+                        <input type="tel" id="phone" name="phone" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="auctionId" class="form-label">Related Auction ID (If applicable)</label>
+                        <input type="text" id="auctionId" name="auctionId" class="form-input" placeholder="e.g., AUC-2024-001">
+                    </div>
+                </div>
+
+                <!-- Detailed Feedback -->
+                <div class="form-section">
+                    <h2 class="section-title">Your Feedback</h2>
+                    <div class="form-group">
+                        <label for="subject" class="form-label">Subject *</label>
+                        <input type="text" id="subject" name="subject" class="form-input" placeholder="Brief description of your feedback" required>
+                        <div class="error-message" id="subjectError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message" class="form-label">Detailed Message *</label>
+                        <textarea id="message" name="message" class="form-input form-textarea" placeholder="Please provide detailed feedback. The more specific you are, the better we can help you." required></textarea>
+                        <div class="character-counter" id="characterCounter">0 / 1000 characters</div>
+                        <div class="error-message" id="messageError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="priority" class="form-label">Priority Level</label>
+                        <select id="priority" name="priority" class="form-select">
+                            <option value="low">Low - General feedback or suggestions</option>
+                            <option value="medium" selected>Medium - Issue that affects my experience</option>
+                            <option value="high">High - Urgent issue requiring immediate attention</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Additional Options -->
+                <div class="form-section">
+                    <h2 class="section-title">Additional Options</h2>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="followUp" name="followUp" style="margin-right: 0.5rem;">
+                            I would like a follow-up response from your team
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="newsletter" name="newsletter" style="margin-right: 0.5rem;">
+                            Subscribe to our newsletter for auction updates
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="submit-section">
+                    <button type="submit" class="btn-submit" id="submitBtn">Submit Feedback</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Previous Feedback Section -->
+        <div class="previous-feedback">
+            <h2 class="section-title">Recent Community Feedback</h2>
+            
+            <div class="feedback-item">
+                <div class="feedback-header">
+                    <span class="feedback-user">Sarah M.</span>
+                    <span class="feedback-date">March 12, 2024</span>
+                </div>
+                <div class="feedback-rating">★★★★★</div>
+                <div class="feedback-text">Excellent platform! The bidding process is smooth and the customer service team was very helpful when I had questions about shipping.</div>
+                <span class="feedback-status status-resolved">Resolved</span>
+            </div>
+
+            <div class="feedback-item">
+                <div class="feedback-header">
+                    <span class="feedback-user">Michael R.</span>
+                    <span class="feedback-date">March 10, 2024</span>
+                </div>
+                <div class="feedback-rating">★★★★☆</div>
+                <div class="feedback-text">Great selection of items. Would love to see more detailed condition reports for antique pieces.</div>
+                <span class="feedback-status status-resolved">Resolved</span>
+            </div>
+
+            <div class="feedback-item">
+                <div class="feedback-header">
+                    <span class="feedback-user">Jennifer L.</span>
+                    <span class="feedback-date">March 8, 2024</span>
+                </div>
+                <div class="feedback-rating">★★★☆☆</div>
+                <div class="feedback-text">The mobile app could use some improvements. Sometimes the bidding interface is slow to respond during peak times.</div>
+                <span class="feedback-status status-pending">Under Review</span>
+            </div>
+        </div>
+    </main>
+
+<!-- Footer Section -->
+<footer class="footer">
+  <div class="footer-container">
+    <!-- About -->
+    <div class="footer-section">
+      <h3>About BidSpirit</h3>
+      <p>
+        BidSpirit is the world’s leading online marketplace for fine art,
+        antiques, furniture, and collectibles. Discover and bid from anywhere.
+      </p>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="footer-section">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Auctions</a></li>
+        <li><a href="#">Gallery</a></li>
+        <li><a href="#">Site Map</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact Info -->
+    <div class="footer-section">
+      <h3>Contact Us</h3>
+      <p>Email: info@bidspirit.com</p>
+      <p>Phone: +234-913-037-4485</p>
+      <p>Address: Lagos, Nigeria</p>
+    </div>
+
+    <!-- Social Media -->
+    <div class="footer-section">
+      <h3>Follow Us</h3>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 BidSpirit. All Rights Reserved.</p>
+  </div>
+</footer>
+
+
+    <script>
+        let selectedFeedbackType = '';
+        let overallRating = 0;
+        let specificRatings = {
+            usability: 0,
+            auction: 0,
+            service: 0
+        };
+
+        // Initialize feedback page
+        function init() {
+            setupFeedbackTypes();
+            setupStarRatings();
+            setupForm();
+            setupCharacterCounter();
+        }
+
+        // Setup feedback type selection
+        function setupFeedbackTypes() {
+            const feedbackTypes = document.querySelectorAll('.feedback-type');
+            
+            feedbackTypes.forEach(type => {
+                type.addEventListener('click', () => {
+                    // Remove previous selection
+                    feedbackTypes.forEach(t => t.classList.remove('selected'));
+                    
+                    // Add selection to clicked type
+                    type.classList.add('selected');
+                    selectedFeedbackType = type.dataset.type;
+                    document.getElementById('feedbackType').value = selectedFeedbackType;
+                    
+                    // Clear error
+                    document.getElementById('typeError').textContent = '';
+                });
+            });
+        }
+
+        // Setup star rating functionality
+        function setupStarRatings() {
+            const starRatings = document.querySelectorAll('.star-rating');
+            
+            starRatings.forEach(rating => {
+                const stars = rating.querySelectorAll('.star');
+                const category = rating.dataset.category;
+                
+                stars.forEach((star, index) => {
+                    star.addEventListener('mouseover', () => {
+                        highlightStars(stars, index + 1);
+                    });
+                    
+                    star.addEventListener('click', () => {
+                        const ratingValue = index + 1;
+                        setRating(stars, ratingValue);
+                        
+                        if (rating.id === 'overallRating') {
+                            overallRating = ratingValue;
+                            document.getElementById('overallRatingValue').value = ratingValue;
+                            document.getElementById('ratingError').textContent = '';
+                        } else if (category) {
+                            specificRatings[category] = ratingValue;
+                        }
+                    });
+                });
+                
+                rating.addEventListener('mouseleave', () => {
+                    if (rating.id === 'overallRating') {
+                        setRating(stars, overallRating);
+                    } else if (category) {
+                        setRating(stars, specificRatings[category]);
+                    }
+                });
+            });
+        }
+
+        function highlightStars(stars, count) {
+            stars.forEach((star, index) => {
+                if (index < count) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        function setRating(stars, rating) {
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        // Setup character counter
+        function setupCharacterCounter() {
+            const messageTextarea = document.getElementById('message');
+            const characterCounter = document.getElementById('characterCounter');
+            const maxLength = 1000;
+
+            messageTextarea.addEventListener('input', function() {
+                const currentLength = this.value.length;
+                characterCounter.textContent = `${currentLength} / ${maxLength} characters`;
+                
+                // Update counter styling based on character count
+                characterCounter.classList.remove('warning', 'error');
+                if (currentLength > maxLength * 0.9) {
+                    characterCounter.classList.add('warning');
+                }
+                if (currentLength > maxLength) {
+                    characterCounter.classList.add('error');
+                }
+                
+                // Auto-expand textarea
+                autoExpand(this);
+            });
+        }
+
+        // Setup form validation and submission
+        function setupForm() {
+            const form = document.getElementById('feedbackForm');
+            
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                if (validateForm()) {
+                    submitFeedback();
+                }
+            });
+
+            // Real-time validation
+            const inputs = form.querySelectorAll('input[required], textarea[required]');
+            inputs.forEach(input => {
+                input.addEventListener('blur', () => validateField(input));
+                input.addEventListener('input', () => clearError(input));
+            });
+        }
+
+        // Validate entire form
+        function validateForm() {
+            let isValid = true;
+            
+            // Validate feedback type
+            if (!selectedFeedbackType) {
+                document.getElementById('typeError').textContent = 'Please select a feedback type';
+                isValid = false;
+            }
+            
+            // Validate overall rating
+            if (overallRating === 0) {
+                document.getElementById('ratingError').textContent = 'Please provide an overall rating';
+                isValid = false;
+            }
+            
+            // Validate required fields
+            const requiredFields = ['name', 'email', 'subject', 'message'];
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (!validateField(field)) {
+                    isValid = false;
+                }
+            });
+            
+            return isValid;
+        }
+
+        // Validate individual field
+        function validateField(field) {
+            const value = field.value.trim();
+            const fieldId = field.id;
+            const errorElement = document.getElementById(fieldId + 'Error');
+            
+            // Clear previous error styling
+            field.classList.remove('error');
+            errorElement.textContent = '';
+            
+            if (field.hasAttribute('required') && !value) {
+                field.classList.add('error');
+                errorElement.textContent = 'This field is required';
+                return false;
+            }
+            
+            // Email validation
+            if (fieldId === 'email' && value) {
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailPattern.test(value)) {
+                    field.classList.add('error');
+                    errorElement.textContent = 'Please enter a valid email address';
+                    return false;
+                }
+            }
+            
+            // Message length validation
+            if (fieldId === 'message' && value.length < 10) {
+                field.classList.add('error');
+                errorElement.textContent = 'Please provide at least 10 characters';
+                return false;
+            }
+            
+            // Message max length validation
+            if (fieldId === 'message' && value.length > 1000) {
+                field.classList.add('error');
+                errorElement.textContent = 'Message cannot exceed 1000 characters';
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Clear error styling
+        function clearError(field) {
+            field.classList.remove('error');
+            const errorElement = document.getElementById(field.id + 'Error');
+            errorElement.textContent = '';
+        }
+
+        // Submit feedback
+        function submitFeedback() {
+            const submitBtn = document.getElementById('submitBtn');
+            const form = document.getElementById('feedbackForm');
+            
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            
+            // Collect form data
+            const formData = {
+                type: selectedFeedbackType,
+                overallRating: overallRating,
+                specificRatings: specificRatings,
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                auctionId: document.getElementById('auctionId').value,
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value,
+                priority: document.getElementById('priority').value,
+                followUp: document.getElementById('followUp').checked,
+                newsletter: document.getElementById('newsletter').checked,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Log the data (in a real application, this would be sent to a server)
+            console.log('Feedback submitted:', formData);
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Show success message
+                document.getElementById('successMessage').style.display = 'block';
+                
+                // Hide form
+                form.style.display = 'none';
+                
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                // Reset button
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Feedback';
+                
+                // Optional: Reset form after delay
+                setTimeout(() => {
+                    if (confirm('Would you like to submit another feedback?')) {
+                        resetForm();
+                    }
+                }, 3000);
+                
+            }, 1500);
+        }
+
+        // Reset form
+        function resetForm() {
+            document.getElementById('feedbackForm').reset();
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('feedbackForm').style.display = 'block';
+            
+            // Reset selections
+            selectedFeedbackType = '';
+            overallRating = 0;
+            specificRatings = { usability: 0, auction: 0, service: 0 };
+            
+            // Clear all star ratings
+            document.querySelectorAll('.star').forEach(star => {
+                star.classList.remove('active');
+            });
+            
+            // Clear feedback type selection
+            document.querySelectorAll('.feedback-type').forEach(type => {
+                type.classList.remove('selected');
+            });
+            
+            // Clear all errors
+            document.querySelectorAll('.error-message').forEach(error => {
+                error.textContent = '';
+            });
+            
+            document.querySelectorAll('.form-input').forEach(input => {
+                input.classList.remove('error');
+            });
+            
+            // Reset character counter
+            document.getElementById('characterCounter').textContent = '0 / 1000 characters';
+            document.getElementById('characterCounter').classList.remove('warning', 'error');
+        }
+
+        // Auto-expand textarea
+        function autoExpand(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            init();
+        });
+
+        // Additional utility functions
+        
+        // Format phone number as user types
+        document.getElementById('phone').addEventListener('input', function() {
+            let value = this.value.replace(/\D/g, '');
+            if (value.length >= 6) {
+                value = value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+            } else if (value.length >= 3) {
+                value = value.replace(/(\d{3})(\d{0,3})/, '($1) $2');
+            }
+            this.value = value;
+        });
+
+        // Prevent form submission on Enter key in text inputs (except textarea)
+        document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"]').forEach(input => {
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                }
+            });
+        });
+
+        // Add smooth transitions for form interactions
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.01)';
+                this.parentElement.style.transition = 'transform 0.2s ease';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+
+        // Add keyboard navigation for feedback types
+        document.addEventListener('keydown', function(e) {
+            const feedbackTypes = document.querySelectorAll('.feedback-type');
+            const currentSelected = document.querySelector('.feedback-type.selected');
+            let currentIndex = Array.from(feedbackTypes).indexOf(currentSelected);
+            
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                e.preventDefault();
+                currentIndex = (currentIndex + 1) % feedbackTypes.length;
+                feedbackTypes[currentIndex].click();
+                feedbackTypes[currentIndex].focus();
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                currentIndex = currentIndex <= 0 ? feedbackTypes.length - 1 : currentIndex - 1;
+                feedbackTypes[currentIndex].click();
+                feedbackTypes[currentIndex].focus();
+            }
+        });
+
+        // Add accessibility improvements
+        document.querySelectorAll('.feedback-type').forEach((type, index) => {
+            type.setAttribute('tabindex', '0');
+            type.setAttribute('role', 'button');
+            type.setAttribute('aria-label', `Select ${type.querySelector('.feedback-type-label').textContent}`);
+            
+            type.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.click();
+                }
+            });
+        });
+
+        // Add star rating keyboard navigation
+        document.querySelectorAll('.star').forEach(star => {
+            star.setAttribute('tabindex', '0');
+            star.setAttribute('role', 'button');
+            
+            star.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.click();
+                }
+            });
+        });
+
+        // Save form data to browser memory (not localStorage due to restrictions)
+        let formAutoSave = {};
+        
+        function saveFormData() {
+            const formInputs = document.querySelectorAll('#feedbackForm input, #feedbackForm textarea, #feedbackForm select');
+            formInputs.forEach(input => {
+                if (input.type === 'checkbox') {
+                    formAutoSave[input.id] = input.checked;
+                } else {
+                    formAutoSave[input.id] = input.value;
+                }
+            });
+            formAutoSave.selectedType = selectedFeedbackType;
+            formAutoSave.overallRating = overallRating;
+            formAutoSave.specificRatings = { ...specificRatings };
+        }
+
+        function loadFormData() {
+            if (Object.keys(formAutoSave).length > 0) {
+                const formInputs = document.querySelectorAll('#feedbackForm input, #feedbackForm textarea, #feedbackForm select');
+                formInputs.forEach(input => {
+                    if (formAutoSave[input.id] !== undefined) {
+                        if (input.type === 'checkbox') {
+                            input.checked = formAutoSave[input.id];
+                        } else {
+                            input.value = formAutoSave[input.id];
+                        }
+                    }
+                });
+                
+                // Restore feedback type selection
+                if (formAutoSave.selectedType) {
+                    const typeElement = document.querySelector(`[data-type="${formAutoSave.selectedType}"]`);
+                    if (typeElement) {
+                        typeElement.click();
+                    }
+                }
+                
+                // Restore ratings
+                if (formAutoSave.overallRating) {
+                    const overallStars = document.querySelectorAll('#overallRating .star');
+                    setRating(overallStars, formAutoSave.overallRating);
+                    overallRating = formAutoSave.overallRating;
+                    document.getElementById('overallRatingValue').value = formAutoSave.overallRating;
+                }
+                
+                if (formAutoSave.specificRatings) {
+                    Object.keys(formAutoSave.specificRatings).forEach(category => {
+                        const stars = document.querySelectorAll(`[data-category="${category}"] .star`);
+                        setRating(stars, formAutoSave.specificRatings[category]);
+                        specificRatings[category] = formAutoSave.specificRatings[category];
+                    });
+                }
+            }
+        }
+
+        // Auto-save form data as user types
+        document.querySelectorAll('#feedbackForm input, #feedbackForm textarea, #feedbackForm select').forEach(input => {
+            input.addEventListener('input', saveFormData);
+            input.addEventListener('change', saveFormData);
+        });
+
+        // Load saved form data on page load
+        window.addEventListener('load', loadFormData);
+
+        // Add form submission analytics (placeholder for real analytics)
+        function trackFormSubmission(data) {
+            console.log('Form submission tracked:', {
+                type: data.type,
+                rating: data.overallRating,
+                timestamp: data.timestamp,
+                hasAuctionId: !!data.auctionId,
+                priority: data.priority
+            });
+        }
+
+        // Enhance the submit feedback function to include tracking
+        const originalSubmitFeedback = submitFeedback;
+        submitFeedback = function() {
+            const formData = {
+                type: selectedFeedbackType,
+                overallRating: overallRating,
+                specificRatings: specificRatings,
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                auctionId: document.getElementById('auctionId').value,
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value,
+                priority: document.getElementById('priority').value,
+                followUp: document.getElementById('followUp').checked,
+                newsletter: document.getElementById('newsletter').checked,
+                timestamp: new Date().toISOString()
+            };
+            
+            trackFormSubmission(formData);
+            originalSubmitFeedback();
+            
+            // Clear auto-saved data after successful submission
+            formAutoSave = {};
+        };
+    </script>
+</body>
+</html>

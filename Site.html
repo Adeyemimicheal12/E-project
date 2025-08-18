@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Map - BidSpirit</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo::before {
+            content: "🏛️";
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Main Content */
+        main {
+            padding: 3rem 0;
+        }
+
+        .sitemap-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        .sitemap-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .sitemap-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .sitemap-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .sitemap-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .sitemap-section {
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 1.5rem;
+            border-left: 4px solid #667eea;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .sitemap-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-links {
+            list-style: none;
+        }
+
+        .section-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .section-links a {
+            color: #555;
+            text-decoration: none;
+            padding: 0.25rem 0;
+            display: block;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .section-links a:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .section-links a:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+            padding-left: 1.5rem;
+        }
+
+        .section-links a:hover:before {
+            opacity: 1;
+        }
+
+        /* Search Box */
+        .search-container {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .search-box {
+            display: inline-flex;
+            align-items: center;
+            background: white;
+            border-radius: 25px;
+            padding: 0.5rem 1rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .search-input {
+            border: none;
+            outline: none;
+            flex: 1;
+            padding: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .search-button {
+            background: #667eea;
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .search-button:hover {
+            background: #5a6fd8;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .social-links a:hover {
+            transform: scale(1.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .sitemap-header h1 {
+                font-size: 2rem;
+            }
+
+            .sitemap-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* Animation */
+        .fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .highlight {
+            background: rgba(255, 255, 0, 0.3);
+            border-radius: 3px;
+            padding: 0 3px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <a href="/" class="logo">BidSpirit</a>
+            <ul class="nav-links">
+                <li><a href="/auctions">Live Auctions</a></li>
+                <li><a href="/categories">Categories</a></li>
+                <li><a href="/sell">Sell</a></li>
+                <li><a href="/help">Help</a></li>
+                <li><a href="/login">Login</a></li>
+            </ul>
+            <a href="/register" class="cta-button">Start Bidding</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="sitemap-header fade-in">
+            <h1>Site Map</h1>
+            <p>Navigate through all areas of BidSpirit - your premier destination for online auctions and collectibles</p>
+        </div>
+
+        <div class="search-container fade-in">
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="Search sitemap..." id="searchInput">
+                <button class="search-button" onclick="searchSitemap()">🔍</button>
+            </div>
+        </div>
+
+        <div class="sitemap-content fade-in">
+            <div class="sitemap-grid" id="sitemapGrid">
+                <div class="sitemap-section">
+                    <h3 class="section-title">🏠 Main Pages</h3>
+                    <ul class="section-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about">About BidSpirit</a></li>
+                        <li><a href="/how-it-works">How It Works</a></li>
+                        <li><a href="/contact">Contact Us</a></li>
+                        <li><a href="/press">Press & Media</a></li>
+                        <li><a href="/careers">Careers</a></li>
+                        <li><a href="/sitemap">Site Map</a></li>
+                    </ul>
+                </div>
+
+                <div class="sitemap-section">
+                    <h3 class="section-title">🔨 Auctions</h3>
+                    <ul class="section-links">
+                        <li><a href="/auctions">All Auctions</a></li>
+                        <li><a href="/auctions/live">Live Auctions</a></li>
+                        <li><a href="/auctions/upcoming">Upcoming Auctions</a></li>
+                        <li><a href="/auctions/ended">Past Auctions</a></li>
+                        <li><a href="/auctions/featured">Featured Auctions</a></li>
+                        <li><a href="/auctions/premium">Premium Auctions</a></li>
+                        <li><a href="/auctions/estate-sales">Estate Sales</a></li>
+                    </ul>
+                </div>
+
+                <div class="sitemap-section">
+                    <h3 class="section-title">📂 Categories</h3>
+                    <ul class="section-links">
+                        <li><a href="/categories">All Categories</a></li>
+                        <li><a href="/categories/art">Art & Antiques</a></li>
+                        <li><a href="/categories/jewelry">Jewelry & Watches</a></li>
+                        <li><a href="/categories/furniture">Furniture & Decor</a></li>
+                        <li><a href="/categories/collectibles">Collectibles</a></li>
+                        <li><a href="/categories/coins">Coins & Currency</a></li>
+                        <li><a href="/categories/books">Books & Manuscripts</a></li>
+                        <li><a href="/categories/vehicles">Vehicles</a></li>
+                        <li><a href="/categories/electronics">Electronics</a></li>
+                        <li><a href="/categories/fashion">Fashion & Accessories</a></li>
+                    </ul>
+                </div>
+
+                <div class="sitemap-section">
+                    <h3 class="section-title">👤 Account</h3>
+                    <ul class="section-links">
+                        <li><a href="/login">Login</a></li>
+                        <li><a href="/register">Create Account</a></li>
+                        <li><a href="/dashboard">My Dashboard</a></li>
+                        <li><a href="/profile">My Profile</a></li>
+                        <li><a href="/bids">My Bids</a></li>
+                        <li><a href="/watchlist">Watchlist</a></li>
+                        <li><a href="/invoices">Invoices</a></li>
+                        <li><a href="/shipping">Shipping Address</a></li>
+                        <li><a href="/payment-methods">Payment Methods</a></li>
+                    </ul>
+                </div>
+
+                <div class="sitemap-section">
+                    <h3 class="section-title">💰 Selling</h3>
+                    <ul class="section-links">
+                        <li><a href="/sell">Start Selling</a></li>
+                        <li><a href="/sell/consign">Consignment</a></li>
+                        <li><a href="/sell/estimate">Get Estimate</a></li>
+                        <li><a href="/sell/guidelines">Selling Guidelines</a></li>
+                        <li><a href="/sell/fees">Fees & Commission</a></li>
+                        <li><a href="/sell/photography">Photography Tips</a></li>
+                        <li><a href="/seller-dashboard">Seller Dashboard</a></li>
+                        <li><a href="/seller-tools">Seller Tools</a></li>
+                    </ul>
+                </div>
+
+                <div class="sitemap-section">
+                    <h3 class="section-title">❓ Help & Support</h3>
+                    <ul class="section-links">
+                        <li><a href="/help">Help Center</a></li>
+                        <li><a href="/help/bidding">Bidding Guide</a></li>
+                        <li><a href="/help/payments">Payment Help</a></li>
+                        <li><a href="/help/shipping">Shipping Info</a></li>
+                        <li><a href="/help/returns">Returns & Refunds</a></li>
+                        <li><a href="/faq">FAQ</a></li>
+                        <li><a href="/contact">Contact Support</a></li>
+                        <li><a href="/live-chat">Live Chat</a></li>
+                    </ul>
+                </div>
+
+                <div class="sitemap-section">
+                    <h3 class="section-title">📰 News & Events</h3>
+                    <ul class="section-links">
+                        <li><a href="/news">Auction News</a></li>
+                        <li><a href="/blog">BidSpirit Blog</a></li>
+                        <li><a href="/events">Upcoming Events</a></li>
+                        <li><a href="/newsletters">Newsletters</a></li>
+                        <li><a href="/market-reports">Market Reports</a></li>
+                        <li><a href="/expert-insights">Expert Insights</a></li>
+                    </ul>
+                </div>
+
+                <div class="sitemap-section">
+                    <h3 class="section-title">⚖️ Legal & Policies</h3>
+                    <ul class="section-links">
+                        <li><a href="/terms">Terms of Service</a></li>
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                        <li><a href="/cookies">Cookie Policy</a></li>
+                        <li><a href="/bidding-terms">Bidding Terms</a></li>
+                        <li><a href="/authenticity">Authenticity Guarantee</a></li>
+                        <li><a href="/dispute-resolution">Dispute Resolution</a></li>
+                        <li><a href="/compliance">Compliance</a></li>
+                    </ul>
+                </div>
+
+                <div class="sitemap-section">
+                    <h3 class="section-title">🏢 Business</h3>
+                    <ul class="section-links">
+                        <li><a href="/business">BidSpirit for Business</a></li>
+                        <li><a href="/enterprise">Enterprise Solutions</a></li>
+                        <li><a href="/api">Developer API</a></li>
+                        <li><a href="/partnerships">Partnerships</a></li>
+                        <li><a href="/affiliate">Affiliate Program</a></li>
+                        <li><a href="/white-label">White Label</a></li>
+                    </ul>
+                </div>
+
+                <div class="sitemap-section">
+                    <h3 class="section-title">🎯 Tools & Features</h3>
+                    <ul class="section-links">
+                        <li><a href="/mobile-app">Mobile App</a></li>
+                        <li><a href="/price-guide">Price Guide</a></li>
+                        <li><a href="/valuation-tool">Valuation Tool</a></li>
+                        <li><a href="/auction-alerts">Auction Alerts</a></li>
+                        <li><a href="/auto-bidding">Auto Bidding</a></li>
+                        <li><a href="/advanced-search">Advanced Search</a></li>
+                        <li><a href="/catalog-viewer">Catalog Viewer</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="search-stats" id="searchStats" style="margin-top: 2rem; text-align: center; color: #666; display: none;">
+                <p>Showing <span id="resultCount">0</span> results for "<span id="searchTerm"></span>"</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <p>&copy; 2025 BidSpirit. All rights reserved.</p>
+                    <p>The world's premier online auction platform</p>
+                </div>
+                <div class="social-links">
+                    <a href="/social/facebook" title="Facebook">📘</a>
+                    <a href="/social/twitter" title="Twitter">🐦</a>
+                    <a href="/social/instagram" title="Instagram">📷</a>
+                    <a href="/social/linkedin" title="LinkedIn">💼</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Search functionality
+        function searchSitemap() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const sections = document.querySelectorAll('.sitemap-section');
+            const searchStats = document.getElementById('searchStats');
+            const resultCount = document.getElementById('resultCount');
+            const searchTermSpan = document.getElementById('searchTerm');
+            
+            let visibleSections = 0;
+            let totalMatches = 0;
+
+            sections.forEach(section => {
+                const links = section.querySelectorAll('.section-links a');
+                let sectionHasMatch = false;
+
+                // Clear previous highlights
+                links.forEach(link => {
+                    link.innerHTML = link.textContent;
+                    link.style.display = 'block';
+                });
+
+                if (searchTerm === '') {
+                    section.style.display = 'block';
+                    visibleSections++;
+                    searchStats.style.display = 'none';
+                    return;
+                }
+
+                links.forEach(link => {
+                    const text = link.textContent.toLowerCase();
+                    if (text.includes(searchTerm)) {
+                        sectionHasMatch = true;
+                        totalMatches++;
+                        
+                        // Highlight matching text
+                        const regex = new RegExp(`(${searchTerm})`, 'gi');
+                        link.innerHTML = link.textContent.replace(regex, '<span class="highlight">$1</span>');
+                    } else {
+                        link.style.display = 'none';
+                    }
+                });
+
+                if (sectionHasMatch) {
+                    section.style.display = 'block';
+                    visibleSections++;
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+
+            // Update search stats
+            if (searchTerm !== '') {
+                searchStats.style.display = 'block';
+                resultCount.textContent = totalMatches;
+                searchTermSpan.textContent = searchTerm;
+            } else {
+                searchStats.style.display = 'none';
+            }
+        }
+
+        // Real-time search
+        document.getElementById('searchInput').addEventListener('input', searchSitemap);
+
+        // Enter key search
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchSitemap();
+            }
+        });
+
+        // Smooth scrolling for internal links
+        document.querySelectorAll('a[href^="/"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Simulate navigation with a subtle animation
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                    // In a real site, this would navigate to the actual page
+                    console.log('Navigating to:', this.getAttribute('href'));
+                }, 150);
+            });
+        });
+
+        // Add loading animation to sections
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeIn 0.6s ease-in';
+                }
+            });
+        });
+
+        document.querySelectorAll('.sitemap-section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Dynamic page count
+        document.addEventListener('DOMContentLoaded', function() {
+            const totalLinks = document.querySelectorAll('.section-links a').length;
+            const pageCountElement = document.createElement('div');
+            pageCountElement.style.textAlign = 'center';
+            pageCountElement.style.marginTop = '2rem';
+            pageCountElement.style.color = '#666';
+            pageCountElement.style.fontSize = '0.9rem';
+            pageCountElement.innerHTML = `<p>📊 Total pages indexed: <strong>${totalLinks}</strong></p>`;
+            document.querySelector('.sitemap-content').appendChild(pageCountElement);
+        });
+    </script>
+</body>
+</html>

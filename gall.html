@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            padding: 2rem;
+        }
+
+                /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1.2rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .navigator {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ff6b35;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .visitor-count {
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .welcome-user {
+            font-size: 1.1rem;
+            color: #ff6b35;
+            font-weight: bold;
+        }
+
+        /* Navigation */
+        .nvcontainer {
+            padding: 1rem 0;
+            position: sticky;
+            top: 80px;
+            z-index: 999;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid black;
+        }
+
+        .nav-content {
+            /* max-width: 1200px; */
+            /* margin: 0 auto; */
+            display: flex;
+            /* justify-content: center; */
+            gap: 1rem;
+            /* padding: 0 2rem; */
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            color: black;
+            text-decoration: none;
+            padding: 0.8rem 0.5rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #f39c12);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .nav-item:hover::before {
+            left: 0;
+        }
+
+        .nav-item:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(45deg, #ff6b35, #e55a2e);
+        }
+
+        .gallery-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            margin-top: 5rem;
+        }
+
+        .gallery-title {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .gallery-subtitle {
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .item-image {
+            width: 100%;
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            background-color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .item-content {
+            padding: 1.5rem;
+        }
+
+        .item-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.8rem;
+        }
+
+        .item-description {
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .item-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .item-category {
+            background-color: #e3f2fd;
+            color: #1976d2;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-weight: 500;
+        }
+
+        .item-date {
+            color: #999;
+        }
+
+        /* Modal for image viewing */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 300px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+
+        .close-btn {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .close-btn:hover {
+            background-color: #555;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1rem;
+            }
+
+            .gallery-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Footer Styles */
+        .footer {
+        background: #111;
+        color: #eee;
+        padding: 40px 20px 20px;
+        font-family: Arial, sans-serif;
+        margin-top: 5rem;
+        }
+
+        .footer-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 30px;
+        margin-bottom: 20px;
+        }
+
+        .footer-section h3 {
+        margin-bottom: 15px;
+        color: #f39c12;
+        }
+
+        .footer-section p, 
+        .footer-section ul, 
+        .footer-section a {
+        font-size: 14px;
+        color: #ccc;
+        text-decoration: none;
+        }
+
+        .footer-section ul {
+        list-style: none;
+        padding: 0;
+        }
+
+        .footer-section ul li {
+        margin: 8px 0;
+        }
+
+        .footer-section ul li a:hover {
+        color: #f39c12;
+        transition: 0.3s;
+        }
+
+        /* Social Icons */
+        .social-icons a {
+        color: #ccc;
+        margin-right: 10px;
+        font-size: 18px;
+        transition: 0.3s;
+        }
+        .social-icons a:hover {
+        color: #f39c12;
+        }
+
+        /* Bottom Bar */
+        .footer-bottom {
+        border-top: 1px solid #444;
+        text-align: center;
+        padding-top: 15px;
+        font-size: 13px;
+        color: #aaa;
+        }
+    </style>
+</head>
+<body>
+           <!-- Header -->
+    <header class="header" data-aos="fade-down">
+        <div class="navigator">
+            <div class="logo">BidSpirit</div>
+            <div class="user-info">
+                <div class="visitor-count">
+                    Visitors: <span id="visitorCount">1,247</span>
+                </div>
+                <div class="welcome-user" id="userWelcome" style="display: none;">
+                    Welcome, <span id="userName"></span>!
+                </div>
+            </div>
+            </div>
+    </header>
+
+    <!-- Navigation -->
+     <nav class="nvcontainer">
+        <div class="nav-content">
+            <a href="homepage.html" class="nav-item">Home</a>
+            <a href="fine.html" class="nav-item">Fine Art</a>
+            <a href="amt.html" class="nav-item ">Antiques</a>
+            <a href="fun.html" class="nav-item">Furniture</a>
+            <a href="coll.html" class="nav-item">Collectibles</a>
+            <a href="pop.html" class="nav-item">Popular Items</a>
+            <a href="upc.html" class="nav-item">Upcoming Auctions</a>
+            <a href="com.html" class="nav-item">Completed</a>
+            <a href="gall.html" class="nav-item active">Gallery</a>
+            <a href="feed.html" class="nav-item">Feedback</a>
+            <a href="about.html" class="nav-item">About Us</a>
+            <a href="contact.html" class="nav-item">Contact</a>
+        </div>
+     </nav>
+    <div class="gallery-header">
+        <h1 class="gallery-title">Photo Gallery</h1>
+        <p class="gallery-subtitle">A collection of beautiful images and stories</p>
+    </div>
+
+    <div class="gallery-grid" id="galleryGrid">
+        <!-- Gallery items will be populated by JavaScript -->
+    </div>
+
+    <!-- Modal for viewing images -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <div class="modal-image" id="modalImage"></div>
+            <h3 id="modalTitle"></h3>
+            <p id="modalDescription"></p>
+            <button class="close-btn" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+           <!-- Footer Section -->
+<footer class="footer">
+  <div class="footer-container">
+    <!-- About -->
+    <div class="footer-section">
+      <h3>About BidSpirit</h3>
+      <p>
+        BidSpirit is the world’s leading online marketplace for fine art,
+        antiques, furniture, and collectibles. Discover and bid from anywhere.
+      </p>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="footer-section">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Auctions</a></li>
+        <li><a href="#">Gallery</a></li>
+        <li><a href="#">Site Map</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact Info -->
+    <div class="footer-section">
+      <h3>Contact Us</h3>
+      <p>Email: info@bidspirit.com</p>
+      <p>Phone: +234-913-037-4485</p>
+      <p>Address: Lagos, Nigeria</p>
+    </div>
+
+    <!-- Social Media -->
+    <div class="footer-section">
+      <h3>Follow Us</h3>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 BidSpirit. All Rights Reserved.</p>
+  </div>
+</footer>
+
+    <script>
+        // Gallery data
+        const galleryItems = [
+            {
+                id: 1,
+                title: "Mountain Sunrise",
+                description: "A breathtaking sunrise over the mountain peaks, painted in warm golden hues across the morning sky.",
+                category: "Nature",
+                date: "2024-03-15",
+                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><linearGradient id='sunrise' x1='0%' y1='0%' x2='0%' y2='100%'><stop offset='0%' stop-color='%23ffeb3b'/><stop offset='50%' stop-color='%23ff9800'/><stop offset='100%' stop-color='%23f44336'/></linearGradient></defs><rect width='400' height='300' fill='url(%23sunrise)'/><polygon points='0,200 100,100 200,150 300,80 400,120 400,300 0,300' fill='%234a5568'/><circle cx='80' cy='80' r='25' fill='%23fff59d'/></svg>"
+            },
+            {
+                id: 2,
+                title: "Ocean Waves",
+                description: "Powerful waves crashing against rocky shores, capturing the raw energy and beauty of the ocean.",
+                category: "Seascape",
+                date: "2024-03-10",
+                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect width='400' height='300' fill='%2300bcd4'/><path d='M0,200 Q100,150 200,180 T400,160 L400,300 L0,300 Z' fill='%230277bd'/><path d='M0,220 Q150,180 300,200 T400,190 L400,300 L0,300 Z' fill='%2301579b'/><circle cx='350' cy='150' r='20' fill='white' opacity='0.7'/></svg>"
+            },
+            {
+                id: 3,
+                title: "City Lights",
+                description: "The vibrant nightlife of a bustling metropolis, with neon lights reflecting off wet streets.",
+                category: "Urban",
+                date: "2024-03-08",
+                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect width='400' height='300' fill='%231a1a1a'/><rect x='50' y='50' width='30' height='150' fill='%23424242'/><rect x='120' y='30' width='25' height='170' fill='%23424242'/><rect x='180' y='60' width='35' height='140' fill='%23424242'/><rect x='250' y='40' width='28' height='160' fill='%23424242'/><rect x='320' y='70' width='32' height='130' fill='%23424242'/><rect x='55' y='60' width='5' height='8' fill='%23ffeb3b'/><rect x='65' y='80' width='5' height='8' fill='%23ff9800'/><rect x='125' y='50' width='5' height='8' fill='%234caf50'/><rect x='185' y='90' width='5' height='8' fill='%23e91e63'/></svg>"
+            },
+            {
+                id: 4,
+                title: "Forest Path",
+                description: "A mysterious path winding through an ancient forest, dappled with sunlight filtering through leaves.",
+                category: "Nature",
+                date: "2024-03-05",
+                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect width='400' height='300' fill='%232e7d32'/><ellipse cx='80' cy='120' rx='25' ry='60' fill='%234a5568'/><ellipse cx='320' cy='100' rx='30' ry='70' fill='%234a5568'/><ellipse cx='200' cy='80' rx='20' ry='50' fill='%234a5568'/><path d='M0,250 Q200,200 400,230 L400,300 L0,300 Z' fill='%236d4c41'/><circle cx='60' cy='60' r='15' fill='%238bc34a' opacity='0.8'/><circle cx='340' cy='40' r='20' fill='%238bc34a' opacity='0.6'/></svg>"
+            },
+            {
+                id: 5,
+                title: "Vintage Car",
+                description: "A classic 1960s convertible in pristine condition, showcasing timeless automotive design.",
+                category: "Vintage",
+                date: "2024-03-02",
+                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect width='400' height='300' fill='%23e8f5e8'/><rect x='50' y='150' width='300' height='80' rx='20' fill='%23d32f2f'/><rect x='70' y='130' width='260' height='40' rx='10' fill='%23ffeb3b' opacity='0.3'/><circle cx='120' cy='230' r='25' fill='%23212121'/><circle cx='330' cy='230' r='25' fill='%23212121'/><circle cx='120' cy='230' r='15' fill='%23424242'/><circle cx='330' cy='230' r='15' fill='%23424242'/><rect x='80' y='160' width='40' height='20' fill='%23fff' opacity='0.9'/></svg>"
+            },
+            {
+                id: 6,
+                title: "Abstract Art",
+                description: "Bold geometric shapes and vibrant colors come together in this modern abstract composition.",
+                category: "Art",
+                date: "2024-02-28",
+                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect width='400' height='300' fill='%23fafafa'/><polygon points='0,0 150,100 50,200 0,300' fill='%23ff5722'/><circle cx='300' cy='100' r='60' fill='%233f51b5'/><rect x='150' y='150' width='100' height='100' fill='%23ffeb3b' transform='rotate(45 200 200)'/><polygon points='250,50 350,80 320,150 280,120' fill='%234caf50'/></svg>"
+            },
+            {
+                id: 7,
+                title: "Desert Sunset",
+                description: "Golden sand dunes stretching endlessly under a spectacular sunset sky painted in warm oranges and purples.",
+                category: "Landscape",
+                date: "2024-02-25",
+                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><linearGradient id='desert' x1='0%' y1='0%' x2='0%' y2='100%'><stop offset='0%' stop-color='%23ff9800'/><stop offset='70%' stop-color='%23ff5722'/><stop offset='100%' stop-color='%23bf360c'/></linearGradient></defs><rect width='400' height='300' fill='url(%23desert)'/><path d='M0,200 Q100,180 200,190 T400,200 L400,300 L0,300 Z' fill='%23d4a574'/><path d='M0,220 Q150,200 300,210 T400,220 L400,300 L0,300 Z' fill='%23c49660'/><circle cx='320' cy='60' r='30' fill='%23ffeb3b' opacity='0.8'/></svg>"
+            },
+            {
+                id: 8,
+                title: "Flower Garden",
+                description: "A vibrant garden in full bloom with colorful flowers dancing in the gentle spring breeze.",
+                category: "Nature",
+                date: "2024-02-20",
+                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect width='400' height='300' fill='%2381c784'/><circle cx='100' cy='100' r='20' fill='%23e91e63'/><circle cx='150' cy='120' r='18' fill='%23ffeb3b'/><circle cx='200' cy='90' r='22' fill='%239c27b0'/><circle cx='250' cy='110' r='19' fill='%23ff5722'/><circle cx='300' cy='130' r='21' fill='%232196f3'/><circle cx='120' cy='160' r='17' fill='%23ff9800'/><circle cx='280' cy='80' r='16' fill='%234caf50'/><rect x='95' y='120' width='4' height='40' fill='%23388e3c'/><rect x='145' y='138' width='4' height='35' fill='%23388e3c'/><rect x='195' y='112' width='4' height='45' fill='%23388e3c'/></svg>"
+            },
+            {
+                id: 9,
+                title: "Architecture",
+                description: "Modern architectural marvel featuring clean lines and geometric patterns against a clear blue sky.",
+                category: "Architecture",
+                date: "2024-02-15",
+                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect width='400' height='300' fill='%2387ceeb'/><rect x='100' y='100' width='80' height='200' fill='%23eceff1'/><rect x='220' y='80' width='100' height='220' fill='%23cfd8dc'/><rect x='110' y='120' width='15' height='20' fill='%232196f3'/><rect x='130' y='120' width='15' height='20' fill='%232196f3'/><rect x='150' y='120' width='15' height='20' fill='%232196f3'/><rect x='110' y='160' width='15' height='20' fill='%232196f3'/><rect x='130' y='160' width='15' height='20' fill='%232196f3'/><rect x='150' y='160' width='15' height='20' fill='%232196f3'/><rect x='240' y='100' width='20' height='25' fill='%232196f3'/><rect x='270' y='100' width='20' height='25' fill='%232196f3'/><rect x='240' y='140' width='20' height='25' fill='%232196f3'/><rect x='270' y='140' width='20' height='25' fill='%232196f3'/></svg>"
+            },
+            {
+                id: 10,
+                title: "Coffee & Books",
+                description: "A cozy reading corner with vintage books and steaming coffee, perfect for quiet contemplation.",
+                category: "Still Life",
+                date: "2024-02-12",
+                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect width='400' height='300' fill='%23f5f5dc'/><rect x='150' y='180' width='60' height='8' fill='%238d6e63'/><rect x='150' y='172' width='60' height='8' fill='%236d4c41'/><rect x='150' y='164' width='60' height='8' fill='%238d6e63'/><rect x='150' y='156' width='60' height='8' fill='%236d4c41'/><ellipse cx='280' cy='150' rx='30' ry='8' fill='%23795548'/><ellipse cx='280' cy='142' rx='25' ry='15' fill='%234e342e'/><rect x='265' y='142' width='5' height='20' fill='%234e342e'/><path d='M270,130 Q275,125 280,130' stroke='%23666' stroke-width='2' fill='none'/></svg>"
+            },
+            {
+                id: 11,
+                title: "Butterfly",
+                description: "A delicate monarch butterfly resting on wildflowers, showcasing nature's intricate beauty and design.",
+                category: "Wildlife",
+                date: "2024-02-08",
+                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect width='400' height='300' fill='%23e8f5e8'/><ellipse cx='150' cy='120' rx='40' ry='25' fill='%23ff9800'/><ellipse cx='250' cy='120' rx='40' ry='25' fill='%23ff9800'/><ellipse cx='150' cy='180' rx='35' ry='20' fill='%23f57c00'/><ellipse cx='250' cy='180' rx='35' ry='20' fill='%23f57c00'/><rect x='195' y='100' width='3' height='100' fill='%23333'/><circle cx='197' cy='95' r='3' fill='%23333'/><circle cx='120' cy='100' r='3' fill='%23000'/><circle cx='280' cy='100' r='3' fill='%23000'/><circle cx='130' cy='140' r='2' fill='%23000'/><circle cx='270' cy='140' r='2' fill='%23000'/></svg>"
+            },
+            {
+                id: 12,
+                title: "Starry Night",
+                description: "A magical night sky filled with twinkling stars above a peaceful countryside landscape.",
+                category: "Night",
+                date: "2024-02-05",
+                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect width='400' height='300' fill='%230d47a1'/><path d='M0,200 Q100,180 200,190 T400,200 L400,300 L0,300 Z' fill='%231b5e20'/><circle cx='80' cy='60' r='2' fill='%23fff'/><circle cx='150' cy='40' r='1.5' fill='%23fff'/><circle cx='220' cy='70' r='2' fill='%23fff'/><circle cx='300' cy='50' r='1.5' fill='%23fff'/><circle cx='350' cy='80' r='2' fill='%23fff'/><circle cx='120' cy='90' r='1' fill='%23fff'/><circle cx='280' cy='30' r='1' fill='%23fff'/><circle cx='320' cy='120' r='8' fill='%23fff59d'/><rect x='180' y='170' width='8' height='30' fill='%23654321'/><polygon points='184,170 174,150 194,150' fill='%231b5e20'/></svg>"
+            }
+        ];
+
+        // Initialize gallery
+        function initGallery() {
+            const galleryGrid = document.getElementById('galleryGrid');
+            
+            galleryItems.forEach(item => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+                galleryItem.onclick = () => openModal(item);
+                
+                galleryItem.innerHTML = `
+                    <div class="item-image" style="background-image: url('${item.image}')">
+                    </div>
+                    <div class="item-content">
+                        <h3 class="item-title">${item.title}</h3>
+                        <p class="item-description">${item.description}</p>
+                        <div class="item-meta">
+                            <span class="item-category">${item.category}</span>
+                            <span class="item-date">${item.date}</span>
+                        </div>
+                    </div>
+                `;
+                
+                galleryGrid.appendChild(galleryItem);
+            });
+        }
+
+        // Open modal
+        function openModal(item) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDescription = document.getElementById('modalDescription');
+            
+            modalImage.style.backgroundImage = `url('${item.image}')`;
+            modalTitle.textContent = item.title;
+            modalDescription.textContent = item.description;
+            
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close modal
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal on outside click
+        document.getElementById('imageModal').onclick = function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        }
+
+        // Close modal on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initGallery);
+    </script>
+</body>
+</html>
